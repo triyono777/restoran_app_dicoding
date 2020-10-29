@@ -4,10 +4,12 @@ import 'package:restoran_app_dicoding/model/restaurant_model.dart';
 class ItemMenuWidget extends StatelessWidget {
   final String name;
   final String price;
+  final String imageUrl;
   const ItemMenuWidget({
     Key key,
-    this.name,
+    this.name = 'name',
     this.price = '0',
+    this.imageUrl = 'https://via.placeholder.com/150',
   }) : super(key: key);
 
   @override
