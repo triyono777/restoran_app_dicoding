@@ -43,7 +43,7 @@ class ItemListRestaurant extends StatelessWidget {
           iconData,
           size: 20,
         ),
-        Text('$rating'),
+        Text('$content'),
       ],
     );
   }

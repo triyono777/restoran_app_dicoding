@@ -16,11 +16,11 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    RestaurantController().getRestaurant(context).then((value) {
-      setState(() {
-        restaurantModel = value;
-      });
-    });
+    RestaurantController().getRestaurant(context).then(
+          (value) => setState(() {
+            restaurantModel = value;
+          }),
+        );
   }
 
   @override
@@ -34,20 +34,22 @@ class _HomePageState extends State<HomePage> {
         children: [
           buildTitle(),
           Expanded(
-            child: ListView.builder(
-              itemCount: restaurantModel?.restaurants?.length ?? 0,
-              itemBuilder: (ctx, index) => GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushNamed(DetailRestaurantPage.routeName);
-                },
-                child: ItemListRestaurant(
-                  name: restaurantModel.restaurants[index].name,
-                  city: restaurantModel.restaurants[index].city,
-                  pictureId: restaurantModel.restaurants[index].pictureId,
-                  rating: restaurantModel.restaurants[index].rating,
-                ),
-              ),
-            ),
+            child: restaurantModel == null
+                ? Center(child: Text('data tidak ada'))
+                : ListView.builder(
+                    itemCount: restaurantModel?.restaurants?.length ?? 0,
+                    itemBuilder: (ctx, index) => GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushNamed(DetailRestaurantPage.routeName);
+                      },
+                      child: ItemListRestaurant(
+                        name: restaurantModel.restaurants[index].name,
+                        city: restaurantModel.restaurants[index].city,
+                        pictureId: restaurantModel.restaurants[index].pictureId,
+                        rating: restaurantModel.restaurants[index].rating,
+                      ),
+                    ),
+                  ),
           ),
         ],
       ),
