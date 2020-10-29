@@ -27,7 +27,7 @@ class Restaurants {
   String description;
   String pictureId;
   String city;
-  double rating;
+  var rating;
   Menus menus;
 
   Restaurants({this.id, this.name, this.description, this.pictureId, this.city, this.rating, this.menus});

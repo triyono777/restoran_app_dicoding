@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:restoran_app_dicoding/controller/restaurant_controller.dart';
+import 'package:restoran_app_dicoding/model/restaurant_model.dart';
 import 'package:restoran_app_dicoding/ui/widgets/item_list_restaurant.dart';
 
 class HomePage extends StatefulWidget {
@@ -8,6 +10,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  RestaurantModel restaurantModel;
+
+  @override
+  void initState() {
+    super.initState();
+    RestaurantController().getRestaurant(context).then((value) {
+      setState(() {
+        restaurantModel = value;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,8 +34,13 @@ class _HomePageState extends State<HomePage> {
           buildTitle(),
           Expanded(
             child: ListView.builder(
-              itemCount: 10,
-              itemBuilder: (ctx, index) => ItemListRestaurant(),
+              itemCount: restaurantModel?.restaurants?.length ?? 0,
+              itemBuilder: (ctx, index) => ItemListRestaurant(
+                name: restaurantModel.restaurants[index].name,
+                city: restaurantModel.restaurants[index].city,
+                pictureId: restaurantModel.restaurants[index].pictureId,
+                rating: restaurantModel.restaurants[index].rating,
+              ),
             ),
           ),
         ],

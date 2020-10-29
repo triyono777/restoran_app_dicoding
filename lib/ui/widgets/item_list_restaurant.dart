@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 class ItemListRestaurant extends StatelessWidget {
   final String name;
   final String city;
-  final double rating;
+  final rating;
   final String pictureId;
   const ItemListRestaurant({
     Key key,
     this.name = 'Name',
     this.city = 'City',
-    this.rating = 4.5,
+    this.rating = 4,
     this.pictureId = 'https://via.placeholder.com/150',
   }) : super(key: key);
 
