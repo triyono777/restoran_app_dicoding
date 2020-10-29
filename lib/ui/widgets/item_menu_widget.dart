@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:restoran_app_dicoding/model/restaurant_model.dart';
 
 class ItemMenuWidget extends StatelessWidget {
+  final String name;
+  final String price;
   const ItemMenuWidget({
     Key key,
+    this.name,
+    this.price = '0',
   }) : super(key: key);
 
   @override
@@ -19,8 +24,8 @@ class ItemMenuWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Text('Menu'),
-            Text('Rp'),
+            Text(name),
+            Text('Rp.$price'),
           ],
         ),
       ),

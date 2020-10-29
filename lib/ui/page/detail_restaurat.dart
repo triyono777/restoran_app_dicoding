@@ -16,17 +16,22 @@ class DetailRestaurantPage extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          Image.network('https://via.placeholder.com/150'),
+          Hero(tag: restaurant.pictureId, child: Image.network(restaurant.pictureId)),
 //          Image.network(widget.restaurantModel.restaurants[widget.index].pictureId),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('${restaurant.city}'),
-              Text('Restaurant'),
+              Text('${restaurant.name}'),
+              Row(
+                children: [
+                  Icon(Icons.pin_drop),
+                  Text('${restaurant.city}'),
+                ],
+              ),
               SizedBox(
                 height: 50,
               ),
-              Text('Restaurant'),
+              Text('${restaurant.description}'),
               SizedBox(
                 height: 50,
               ),
@@ -36,7 +41,9 @@ class DetailRestaurantPage extends StatelessWidget {
                 child: ListView.builder(
                   itemCount: 10,
                   scrollDirection: Axis.horizontal,
-                  itemBuilder: (ctx, index) => ItemMenuWidget(),
+                  itemBuilder: (ctx, index) => ItemMenuWidget(
+                    name: restaurant.menus.foods[index].name,
+                  ),
                 ),
               ),
               Text('Drinks Menu '),
@@ -45,7 +52,9 @@ class DetailRestaurantPage extends StatelessWidget {
                 child: ListView.builder(
                   itemCount: 10,
                   scrollDirection: Axis.horizontal,
-                  itemBuilder: (ctx, index) => ItemMenuWidget(),
+                  itemBuilder: (ctx, index) => ItemMenuWidget(
+                    name: restaurant.menus.drinks[index].name,
+                  ),
                 ),
               ),
             ],

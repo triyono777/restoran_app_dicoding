@@ -13,10 +13,13 @@ class ItemListRestaurant extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: ListTile(
-        leading: Image.network(
-          restaurants.pictureId,
-          width: 100,
-          height: 100,
+        leading: Hero(
+          tag: restaurants.pictureId,
+          child: Image.network(
+            restaurants.pictureId,
+            width: 100,
+            height: 100,
+          ),
         ),
         title: Text(restaurants.name),
         subtitle: Column(
