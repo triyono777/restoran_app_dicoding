@@ -59,14 +59,29 @@ class HomePage extends StatelessWidget {
   Widget buildTitle() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Stack(
+        overflow: Overflow.visible,
         children: [
-          Text(
-            'Restaurant',
-            style: TextStyle(fontSize: 30),
+          Positioned(
+            right: -100,
+            top: 5,
+            child: Image.asset(
+              'assets/logo/logo.png',
+              width: 100,
+              height: 100,
+              color: Colors.transparent.withOpacity(0.1),
+            ),
           ),
-          Text('Recomended Restaurants for you'),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Restaurant',
+                style: TextStyle(fontSize: 30),
+              ),
+              Text('Recomended Restaurants for you'),
+            ],
+          ),
         ],
       ),
     );

@@ -43,6 +43,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     ErrorWidget.builder = getErrorWidget;
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Restaurant App',
       theme: ThemeData(
         primaryColor: primaryColor,
