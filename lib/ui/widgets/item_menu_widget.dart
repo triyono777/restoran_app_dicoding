@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:restoran_app_dicoding/model/restaurant_model.dart';
 
 class ItemMenuWidget extends StatelessWidget {
   final String name;

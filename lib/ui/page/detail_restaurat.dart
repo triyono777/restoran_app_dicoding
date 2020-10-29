@@ -12,70 +12,70 @@ class DetailRestaurantPage extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          SliverAppBar(
-            title: Text(restaurant.name),
-            expandedHeight: 300.0,
-            flexibleSpace: FlexibleSpaceBar(
-              background: Image.network(restaurant.pictureId, fit: BoxFit.cover),
-            ),
-          ),
-          SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                buildColumn(),
-              ],
-            ),
+          buildAppBar(),
+          buildBody(),
+        ],
+      ),
+    );
+  }
+
+  SliverList buildBody() {
+    return SliverList(
+      delegate: SliverChildListDelegate(
+        [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('${restaurant.name}'),
+              Row(
+                children: [
+                  Icon(Icons.pin_drop),
+                  Text('${restaurant.city}'),
+                ],
+              ),
+              SizedBox(
+                height: 50,
+              ),
+              Text('${restaurant.description}'),
+              SizedBox(
+                height: 50,
+              ),
+              Text('Foods Menu '),
+              Container(
+                height: 100,
+                child: ListView.builder(
+                  itemCount: restaurant.menus.foods.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (ctx, index) => ItemMenuWidget(
+                    name: restaurant.menus.foods[index].name,
+                  ),
+                ),
+              ),
+              Text('Drinks Menu '),
+              Container(
+                height: 100,
+                child: ListView.builder(
+                  itemCount: restaurant.menus.drinks.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (ctx, index) => ItemMenuWidget(
+                    name: restaurant.menus.drinks[index].name,
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
     );
   }
 
-  Widget buildColumn() {
-    return Column(
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('${restaurant.name}'),
-            Row(
-              children: [
-                Icon(Icons.pin_drop),
-                Text('${restaurant.city}'),
-              ],
-            ),
-            SizedBox(
-              height: 50,
-            ),
-            Text('${restaurant.description}'),
-            SizedBox(
-              height: 50,
-            ),
-            Text('Foods Menu '),
-            Container(
-              height: 100,
-              child: ListView.builder(
-                itemCount: restaurant.menus.foods.length,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (ctx, index) => ItemMenuWidget(
-                  name: restaurant.menus.foods[index].name,
-                ),
-              ),
-            ),
-            Text('Drinks Menu '),
-            Container(
-              height: 100,
-              child: ListView.builder(
-                itemCount: restaurant.menus.drinks.length,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (ctx, index) => ItemMenuWidget(
-                  name: restaurant.menus.drinks[index].name,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
+  SliverAppBar buildAppBar() {
+    return SliverAppBar(
+      title: Text(restaurant.name),
+      expandedHeight: 300.0,
+      flexibleSpace: FlexibleSpaceBar(
+        background: Image.network(restaurant.pictureId, fit: BoxFit.cover),
+      ),
     );
   }
 }

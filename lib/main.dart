@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:restoran_app_dicoding/ui/page/detail_restaurat.dart';
 import 'package:restoran_app_dicoding/ui/page/home_page.dart';
+import 'package:restoran_app_dicoding/ui/page/splash_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -46,8 +47,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: HomePage.routeName,
+      initialRoute: SplashScreen.routeName,
       routes: {
+        SplashScreen.routeName: (ctx) => SplashScreen(),
         HomePage.routeName: (ctx) => HomePage(),
         DetailRestaurantPage.routeName: (ctx) => DetailRestaurantPage(
               restaurant: ModalRoute.of(ctx).settings.arguments,
