@@ -27,20 +27,24 @@ class ItemListRestaurant extends StatelessWidget {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(city),
-            Row(
-              children: [
-                Icon(
-                  Icons.star,
-                  size: 20,
-                ),
-                Text('$rating'),
-              ],
-            ),
+            buildItem(iconData: Icons.pin_drop, content: city),
+            buildItem(iconData: Icons.star, content: rating),
           ],
         ),
         isThreeLine: true,
       ),
+    );
+  }
+
+  Row buildItem({IconData iconData, var content}) {
+    return Row(
+      children: [
+        Icon(
+          iconData,
+          size: 20,
+        ),
+        Text('$rating'),
+      ],
     );
   }
 }

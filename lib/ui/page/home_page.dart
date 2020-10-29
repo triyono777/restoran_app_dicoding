@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:restoran_app_dicoding/controller/restaurant_controller.dart';
 import 'package:restoran_app_dicoding/model/restaurant_model.dart';
+import 'package:restoran_app_dicoding/ui/page/detail_restaurat.dart';
 import 'package:restoran_app_dicoding/ui/widgets/item_list_restaurant.dart';
 
 class HomePage extends StatefulWidget {
@@ -35,11 +36,16 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             child: ListView.builder(
               itemCount: restaurantModel?.restaurants?.length ?? 0,
-              itemBuilder: (ctx, index) => ItemListRestaurant(
-                name: restaurantModel.restaurants[index].name,
-                city: restaurantModel.restaurants[index].city,
-                pictureId: restaurantModel.restaurants[index].pictureId,
-                rating: restaurantModel.restaurants[index].rating,
+              itemBuilder: (ctx, index) => GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushNamed(DetailRestaurantPage.routeName);
+                },
+                child: ItemListRestaurant(
+                  name: restaurantModel.restaurants[index].name,
+                  city: restaurantModel.restaurants[index].city,
+                  pictureId: restaurantModel.restaurants[index].pictureId,
+                  rating: restaurantModel.restaurants[index].rating,
+                ),
               ),
             ),
           ),
