@@ -58,7 +58,7 @@ class DetailRestaurantPage extends StatelessWidget {
                 ),
                 buildText('Foods Menu'),
                 Container(
-                  height: 150,
+                  height: 180,
                   child: ListView.builder(
                     itemCount: restaurant.menus.foods.length,
                     scrollDirection: Axis.horizontal,
@@ -69,7 +69,7 @@ class DetailRestaurantPage extends StatelessWidget {
                 ),
                 buildText('Drinks Menu '),
                 Container(
-                  height: 150,
+                  height: 180,
                   child: ListView.builder(
                     itemCount: restaurant.menus.drinks.length,
                     scrollDirection: Axis.horizontal,
