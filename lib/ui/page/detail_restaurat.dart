@@ -2,17 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:restoran_app_dicoding/model/restaurant_model.dart';
 import 'package:restoran_app_dicoding/ui/widgets/item_menu_widget.dart';
 
-class DetailRestaurantPage extends StatefulWidget {
+class DetailRestaurantPage extends StatelessWidget {
   static const routeName = '/DetailRestaurantPage';
-  final RestaurantModel restaurantModel;
-  final int index;
+  final Restaurants restaurant;
 
-  const DetailRestaurantPage({Key key, this.restaurantModel, this.index}) : super(key: key);
-  @override
-  _DetailRestaurantPageState createState() => _DetailRestaurantPageState();
-}
+  const DetailRestaurantPage({Key key, this.restaurant}) : super(key: key);
 
-class _DetailRestaurantPageState extends State<DetailRestaurantPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +21,7 @@ class _DetailRestaurantPageState extends State<DetailRestaurantPage> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Restaurant'),
+              Text('${restaurant.city}'),
               Text('Restaurant'),
               SizedBox(
                 height: 50,

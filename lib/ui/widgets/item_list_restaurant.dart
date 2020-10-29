@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:restoran_app_dicoding/model/restaurant_model.dart';
 
 class ItemListRestaurant extends StatelessWidget {
-  final String name;
-  final String city;
-  final rating;
-  final String pictureId;
+  final Restaurants restaurants;
   const ItemListRestaurant({
     Key key,
-    this.name = 'Name',
-    this.city = 'City',
-    this.rating = 4,
-    this.pictureId = 'https://via.placeholder.com/150',
+    this.restaurants,
   }) : super(key: key);
 
   @override
@@ -19,16 +14,16 @@ class ItemListRestaurant extends StatelessWidget {
       padding: const EdgeInsets.all(4.0),
       child: ListTile(
         leading: Image.network(
-          pictureId,
+          restaurants.pictureId,
           width: 100,
           height: 100,
         ),
-        title: Text(name),
+        title: Text(restaurants.name),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            buildItem(iconData: Icons.pin_drop, content: city),
-            buildItem(iconData: Icons.star, content: rating),
+            buildItem(iconData: Icons.pin_drop, content: restaurants.city),
+            buildItem(iconData: Icons.star, content: restaurants.rating),
           ],
         ),
         isThreeLine: true,

@@ -5,13 +5,10 @@ import 'package:restoran_app_dicoding/model/restaurant_model.dart';
 class RestaurantController {
   RestaurantModel restaurantModel;
   Future<RestaurantModel> getRestaurant(BuildContext context) async {
-    try {
-      String data = await DefaultAssetBundle.of(context).loadString('assets/data/local_restaurant.json');
-      var result = json.decode(data);
-      restaurantModel = RestaurantModel.fromJson(result);
-    } catch (e) {
-      print('caught error = $e');
-    }
+    String data = await DefaultAssetBundle.of(context).loadString('assets/data/local_restaurant.json');
+    var result = json.decode(data);
+    restaurantModel = RestaurantModel.fromJson(result);
+
     return restaurantModel;
   }
 }

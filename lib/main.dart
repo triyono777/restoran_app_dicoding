@@ -10,25 +10,28 @@ void main() {
 }
 
 Widget getErrorWidget(FlutterErrorDetails error) {
-  return Container(
-    color: Colors.red,
-    width: double.infinity,
-    child: Center(
-      child: Column(
-        children: [
-          Text(
-            "Terjadi error",
-            style: TextStyle(color: Colors.white),
-          ),
-          Text(
-            "Hubungi pengembang aplikasi",
-            style: TextStyle(color: Colors.white),
-          ),
-          Text(
-            "error message : ${error.exception}",
-            style: TextStyle(color: Colors.white),
-          ),
-        ],
+  return Scaffold(
+    body: Container(
+      color: Colors.red,
+      width: double.infinity,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Terjadi error",
+              style: TextStyle(color: Colors.white),
+            ),
+            Text(
+              "Hubungi pengembang aplikasi",
+              style: TextStyle(color: Colors.white),
+            ),
+            Text(
+              "error message : ${error.exception}",
+              style: TextStyle(color: Colors.white),
+            ),
+          ],
+        ),
       ),
     ),
   );
@@ -48,7 +51,9 @@ class MyApp extends StatelessWidget {
       initialRoute: HomePage.routeName,
       routes: {
         HomePage.routeName: (ctx) => HomePage(),
-        DetailRestaurantPage.routeName: (ctx) => DetailRestaurantPage(),
+        DetailRestaurantPage.routeName: (ctx) => DetailRestaurantPage(
+              restaurant: ModalRoute.of(ctx).settings.arguments,
+            ),
       },
     );
   }
