@@ -14,9 +14,33 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text('List Restaurant'),
       ),
-      body: ListView.builder(
-        itemCount: 10,
-        itemBuilder: (ctx, index) => ItemListRestaurant(),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          buildTitle(),
+          Expanded(
+            child: ListView.builder(
+              itemCount: 10,
+              itemBuilder: (ctx, index) => ItemListRestaurant(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildTitle() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Restaurant',
+            style: TextStyle(fontSize: 30),
+          ),
+          Text('Recomended Restaurants for you'),
+        ],
       ),
     );
   }
