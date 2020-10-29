@@ -10,37 +10,36 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('List Restaurant'),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          buildTitle(),
-          Expanded(
-            child: FutureBuilder<RestaurantModel>(
-              future: RestaurantController().getRestaurant(context),
-              builder: (ctx, snapshot) => snapshot.connectionState == ConnectionState.waiting
-                  ? Center(child: CircularProgressIndicator())
-                  : snapshot.hasError
-                      ? Text('terjadi kesalahan load data')
-                      : ListView.builder(
-                          itemCount: snapshot.data.restaurants.length,
-                          itemBuilder: (ctx, index) => GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pushNamed(
-                                DetailRestaurantPage.routeName,
-                                arguments: snapshot.data.restaurants[index],
-                              );
-                            },
-                            child: ItemListRestaurant(
-                              restaurants: snapshot.data.restaurants[index],
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            buildTitle(),
+            Expanded(
+              child: FutureBuilder<RestaurantModel>(
+                future: RestaurantController().getRestaurant(context),
+                builder: (ctx, snapshot) => snapshot.connectionState == ConnectionState.waiting
+                    ? Center(child: CircularProgressIndicator())
+                    : snapshot.hasError
+                        ? Text('terjadi kesalahan load data')
+                        : ListView.builder(
+                            itemCount: snapshot.data.restaurants.length,
+                            itemBuilder: (ctx, index) => GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).pushNamed(
+                                  DetailRestaurantPage.routeName,
+                                  arguments: snapshot.data.restaurants[index],
+                                );
+                              },
+                              child: ItemListRestaurant(
+                                restaurants: snapshot.data.restaurants[index],
+                              ),
                             ),
                           ),
-                        ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

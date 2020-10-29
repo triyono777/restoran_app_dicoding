@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:restoran_app_dicoding/const/const.dart';
 import 'package:restoran_app_dicoding/model/restaurant_model.dart';
 import 'package:restoran_app_dicoding/ui/widgets/item_menu_widget.dart';
 
@@ -23,55 +24,82 @@ class DetailRestaurantPage extends StatelessWidget {
     return SliverList(
       delegate: SliverChildListDelegate(
         [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('${restaurant.name}'),
-              Row(
-                children: [
-                  Icon(Icons.pin_drop),
-                  Text('${restaurant.city}'),
-                ],
-              ),
-              SizedBox(
-                height: 50,
-              ),
-              Text('${restaurant.description}'),
-              SizedBox(
-                height: 50,
-              ),
-              Text('Foods Menu '),
-              Container(
-                height: 100,
-                child: ListView.builder(
-                  itemCount: restaurant.menus.foods.length,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (ctx, index) => ItemMenuWidget(
-                    name: restaurant.menus.foods[index].name,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${restaurant.name}',
+                  style: myTextTheme.headline5,
+                ),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.pin_drop,
+                      size: myTextTheme.subtitle1.fontSize,
+                    ),
+                    Text(
+                      '${restaurant.city}',
+                      style: myTextTheme.subtitle1,
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  '${restaurant.description}',
+                  textAlign: TextAlign.justify,
+                  style: myTextTheme.bodyText1,
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                buildText('Foods Menu'),
+                Container(
+                  height: 150,
+                  child: ListView.builder(
+                    itemCount: restaurant.menus.foods.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (ctx, index) => ItemMenuWidget(
+                      name: restaurant.menus.foods[index].name,
+                    ),
                   ),
                 ),
-              ),
-              Text('Drinks Menu '),
-              Container(
-                height: 100,
-                child: ListView.builder(
-                  itemCount: restaurant.menus.drinks.length,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (ctx, index) => ItemMenuWidget(
-                    name: restaurant.menus.drinks[index].name,
+                buildText('Drinks Menu '),
+                Container(
+                  height: 150,
+                  child: ListView.builder(
+                    itemCount: restaurant.menus.drinks.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (ctx, index) => ItemMenuWidget(
+                      name: restaurant.menus.drinks[index].name,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
     );
   }
 
+  Text buildText(String label) => Text(
+        label,
+        style: myTextTheme.headline6,
+      );
+
   SliverAppBar buildAppBar() {
     return SliverAppBar(
-      title: Text(restaurant.name),
+      backgroundColor: primaryColor,
+      textTheme: myTextTheme,
+      iconTheme: IconThemeData(color: Colors.white),
+      title: Text(
+        restaurant.name,
+      ),
+      pinned: true,
       expandedHeight: 300.0,
       flexibleSpace: FlexibleSpaceBar(
         background: Image.network(restaurant.pictureId, fit: BoxFit.cover),

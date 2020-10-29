@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:restoran_app_dicoding/const/const.dart';
 import 'package:restoran_app_dicoding/model/restaurant_model.dart';
 
 class ItemListRestaurant extends StatelessWidget {
@@ -23,12 +24,15 @@ class ItemListRestaurant extends StatelessWidget {
           ),
         ),
       ),
-      title: Text(restaurants.name),
+      title: Text(
+        restaurants.name,
+        style: myTextTheme.subtitle1,
+      ),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           buildItem(iconData: Icons.pin_drop, content: restaurants.city),
-          buildItem(iconData: Icons.star, content: restaurants.rating, color: Colors.orange.shade300),
+          buildItem(iconData: Icons.star, content: restaurants.rating, color: accentColor),
         ],
       ),
       isThreeLine: true,
@@ -40,10 +44,13 @@ class ItemListRestaurant extends StatelessWidget {
       children: [
         Icon(
           iconData,
-          size: 20,
+          size: myTextTheme.subtitle2.fontSize,
           color: color,
         ),
-        Text('$content'),
+        Text(
+          '$content',
+          style: myTextTheme.subtitle2,
+        ),
       ],
     );
   }

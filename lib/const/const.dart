@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-final Color primaryColor = Color(0xFFFFFFFF);
-final Color secondaryColor = Color(0xFF6B38FB);
+final Color primaryColor = Color(0xFF931a25);
+final Color secondaryColor = Color(0xFFe97171);
+final Color accentColor = Color(0xFFffcb8e);
 
 final TextTheme myTextTheme = TextTheme(
   headline1: GoogleFonts.quicksand(fontSize: 92, fontWeight: FontWeight.w300, letterSpacing: -1.5),
