@@ -102,7 +102,10 @@ class DetailRestaurantPage extends StatelessWidget {
       pinned: true,
       expandedHeight: 300.0,
       flexibleSpace: FlexibleSpaceBar(
-        background: Image.network(restaurant.pictureId, fit: BoxFit.cover),
+        background: Hero(
+          tag: restaurant.pictureId,
+          child: Image.network(restaurant.pictureId, fit: BoxFit.cover),
+        ),
       ),
     );
   }
