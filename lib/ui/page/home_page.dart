@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:restoran_app_dicoding/controller/restaurant_controller.dart';
 import 'package:restoran_app_dicoding/model/restaurant_model.dart';
 import 'package:restoran_app_dicoding/ui/page/detail_restaurat.dart';
@@ -22,17 +23,28 @@ class HomePage extends StatelessWidget {
                     ? Center(child: CircularProgressIndicator())
                     : snapshot.hasError
                         ? Text('terjadi kesalahan load data')
-                        : ListView.builder(
-                            itemCount: snapshot.data.restaurants.length,
-                            itemBuilder: (ctx, index) => GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).pushNamed(
-                                  DetailRestaurantPage.routeName,
-                                  arguments: snapshot.data.restaurants[index],
-                                );
-                              },
-                              child: ItemListRestaurant(
-                                restaurants: snapshot.data.restaurants[index],
+                        : AnimationLimiter(
+                            child: ListView.builder(
+                              itemCount: snapshot.data.restaurants.length,
+                              itemBuilder: (ctx, index) => AnimationConfiguration.staggeredList(
+                                position: index,
+                                duration: const Duration(milliseconds: 375),
+                                child: SlideAnimation(
+                                  verticalOffset: 50.0,
+                                  child: FadeInAnimation(
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).pushNamed(
+                                          DetailRestaurantPage.routeName,
+                                          arguments: snapshot.data.restaurants[index],
+                                        );
+                                      },
+                                      child: ItemListRestaurant(
+                                        restaurants: snapshot.data.restaurants[index],
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
