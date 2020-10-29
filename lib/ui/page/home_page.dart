@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:restoran_app_dicoding/ui/widgets/item_list_restaurant.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/Homepage';
@@ -15,9 +16,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: ListView.builder(
         itemCount: 10,
-        itemBuilder: (ctx, index) => ListTile(
-          title: Text('Nama Restaurant'),
-        ),
+        itemBuilder: (ctx, index) => ItemListRestaurant(),
       ),
     );
   }
