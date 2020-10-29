@@ -10,37 +10,38 @@ class ItemListRestaurant extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: ListTile(
-        leading: Hero(
-          tag: restaurants.pictureId,
+    return ListTile(
+      leading: Hero(
+        tag: restaurants.pictureId,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
           child: Image.network(
             restaurants.pictureId,
             fit: BoxFit.cover,
             width: 100,
-            height: 100,
+            height: 150,
           ),
         ),
-        title: Text(restaurants.name),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            buildItem(iconData: Icons.pin_drop, content: restaurants.city),
-            buildItem(iconData: Icons.star, content: restaurants.rating),
-          ],
-        ),
-        isThreeLine: true,
       ),
+      title: Text(restaurants.name),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          buildItem(iconData: Icons.pin_drop, content: restaurants.city),
+          buildItem(iconData: Icons.star, content: restaurants.rating, color: Colors.orange.shade300),
+        ],
+      ),
+      isThreeLine: true,
     );
   }
 
-  Row buildItem({IconData iconData, var content}) {
+  Row buildItem({IconData iconData, var content, Color color = Colors.grey}) {
     return Row(
       children: [
         Icon(
           iconData,
           size: 20,
+          color: color,
         ),
         Text('$content'),
       ],
