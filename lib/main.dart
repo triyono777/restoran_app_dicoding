@@ -14,9 +14,21 @@ Widget getErrorWidget(FlutterErrorDetails error) {
     color: Colors.red,
     width: double.infinity,
     child: Center(
-      child: Text(
-        "Terjadi error pada data",
-        style: TextStyle(color: Colors.white),
+      child: Column(
+        children: [
+          Text(
+            "Terjadi error",
+            style: TextStyle(color: Colors.white),
+          ),
+          Text(
+            "Hubungi pengembang aplikasi",
+            style: TextStyle(color: Colors.white),
+          ),
+          Text(
+            "error message : ${error.exception}",
+            style: TextStyle(color: Colors.white),
+          ),
+        ],
       ),
     ),
   );
