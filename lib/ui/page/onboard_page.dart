@@ -2,12 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:restoran_app_dicoding/ui/page/home_page.dart';
 
-class OnBoardingPage extends StatefulWidget {
-  @override
-  _OnBoardingPageState createState() => _OnBoardingPageState();
-}
-
-class _OnBoardingPageState extends State<OnBoardingPage> {
+class OnBoardingPage extends StatelessWidget {
   final introKey = GlobalKey<IntroductionScreenState>();
 
   void _onIntroEnd(context) {
