@@ -13,14 +13,14 @@ class DetailRestaurantPage extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          buildAppBar(),
-          buildBody(),
+          _buildAppBar(),
+          _buildBody(),
         ],
       ),
     );
   }
 
-  SliverList buildBody() {
+  SliverList _buildBody() {
     return SliverList(
       delegate: SliverChildListDelegate(
         [
@@ -91,7 +91,7 @@ class DetailRestaurantPage extends StatelessWidget {
         style: myTextTheme.headline6,
       );
 
-  SliverAppBar buildAppBar() {
+  SliverAppBar _buildAppBar() {
     return SliverAppBar(
       backgroundColor: primaryColor,
       textTheme: myTextTheme,

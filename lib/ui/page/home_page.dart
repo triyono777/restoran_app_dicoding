@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
                 builder: (ctx, snapshot) => snapshot.connectionState == ConnectionState.waiting
                     ? Center(child: CircularProgressIndicator())
                     : snapshot.hasError
-                        ? Text('terjadi kesalahan load data')
+                        ? Text('terjadi kesalahan load data ${snapshot.error}')
                         : AnimationLimiter(
                             child: ListView.builder(
                               itemCount: snapshot.data.restaurants.length,
