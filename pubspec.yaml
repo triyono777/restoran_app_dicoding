@@ -16,6 +16,7 @@ dependencies:
   google_fonts: ^1.1.1
   flutter_staggered_animations: ^0.1.2
   introduction_screen: ^1.0.9
+  lottie: ^0.7.0+1
 
 dev_dependencies:
   flutter_test:
@@ -32,6 +33,7 @@ flutter:
   assets:
      - assets/data/
      - assets/logo/
+     - assets/animation/
      - assets/image/onboard/
      - assets/google_fonts/quick_sand/
 

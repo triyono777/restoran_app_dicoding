@@ -4,9 +4,29 @@ import 'package:restoran_app_dicoding/controller/restaurant_controller.dart';
 import 'package:restoran_app_dicoding/model/restaurant_model.dart';
 import 'package:restoran_app_dicoding/ui/page/detail_restaurat.dart';
 import 'package:restoran_app_dicoding/ui/widgets/item_list_restaurant.dart';
+import 'package:lottie/lottie.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   static const routeName = '/Homepage';
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+  AnimationController _controller;
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,37 +37,44 @@ class HomePage extends StatelessWidget {
           children: [
             buildTitle(),
             Expanded(
-              child: FutureBuilder<RestaurantModel>(
-                future: RestaurantController().getRestaurant(context),
-                builder: (ctx, snapshot) => snapshot.connectionState == ConnectionState.waiting
-                    ? Center(child: CircularProgressIndicator())
-                    : snapshot.hasError
-                        ? Text('terjadi kesalahan load data ${snapshot.error}')
-                        : AnimationLimiter(
-                            child: ListView.builder(
-                              itemCount: snapshot.data.restaurants.length,
-                              itemBuilder: (ctx, index) => AnimationConfiguration.staggeredList(
-                                position: index,
-                                duration: const Duration(milliseconds: 375),
-                                child: SlideAnimation(
-                                  verticalOffset: 50.0,
-                                  child: FadeInAnimation(
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.of(context).pushNamed(
-                                          DetailRestaurantPage.routeName,
-                                          arguments: snapshot.data.restaurants[index],
-                                        );
-                                      },
-                                      child: ItemListRestaurant(
-                                        restaurants: snapshot.data.restaurants[index],
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  RestaurantController().getRestaurant(context);
+                },
+                child: FutureBuilder<RestaurantModel>(
+                  future: RestaurantController().getRestaurant(context),
+                  builder: (ctx, snapshot) => snapshot.connectionState == ConnectionState.waiting
+                      ? Lottie.asset(
+                          'assets/animation/loading.json',
+                        )
+                      : snapshot.hasError
+                          ? Text('terjadi kesalahan load data ${snapshot.error}')
+                          : AnimationLimiter(
+                              child: ListView.builder(
+                                itemCount: snapshot.data.restaurants.length,
+                                itemBuilder: (ctx, index) => AnimationConfiguration.staggeredList(
+                                  position: index,
+                                  duration: const Duration(milliseconds: 375),
+                                  child: SlideAnimation(
+                                    verticalOffset: 50.0,
+                                    child: FadeInAnimation(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.of(context).pushNamed(
+                                            DetailRestaurantPage.routeName,
+                                            arguments: snapshot.data.restaurants[index],
+                                          );
+                                        },
+                                        child: ItemListRestaurant(
+                                          restaurants: snapshot.data.restaurants[index],
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
+                ),
               ),
             ),
           ],
