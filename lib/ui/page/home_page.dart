@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:provider/provider.dart';
 import 'package:restoran_app_dicoding/controller/restaurant_controller.dart';
 import 'package:restoran_app_dicoding/model/restaurant_model.dart';
 import 'package:restoran_app_dicoding/ui/page/detail_restaurat.dart';
@@ -39,10 +40,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             Expanded(
               child: RefreshIndicator(
                 onRefresh: () async {
-                  RestaurantController().getRestaurantAll();
+                  Provider.of<RestaurantController>(context, listen: false).getRestaurantAll();
                 },
                 child: FutureBuilder<RestaurantModel>(
-                  future: RestaurantController().getRestaurantAll(),
+                  future: Provider.of<RestaurantController>(context, listen: false).getRestaurantAll(),
                   builder: (ctx, snapshot) => snapshot.connectionState == ConnectionState.waiting
                       ? Center(
                           child: Lottie.asset(
@@ -51,24 +52,26 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         )
                       : snapshot.hasError
                           ? Text('terjadi kesalahan load data ${snapshot.error}')
-                          : AnimationLimiter(
-                              child: ListView.builder(
-                                itemCount: snapshot.data.count,
-                                itemBuilder: (ctx, index) => AnimationConfiguration.staggeredList(
-                                  position: index,
-                                  duration: const Duration(milliseconds: 375),
-                                  child: SlideAnimation(
-                                    verticalOffset: 50.0,
-                                    child: FadeInAnimation(
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context).pushNamed(
-                                            DetailRestaurantPage.routeName,
-                                            arguments: snapshot.data.restaurants[index],
-                                          );
-                                        },
-                                        child: ItemListRestaurant(
-                                          restaurants: snapshot.data.restaurants[index],
+                          : Consumer<RestaurantController>(
+                              builder: (ctx, restaurant, ch) => AnimationLimiter(
+                                child: ListView.builder(
+                                  itemCount: restaurant.restaurantModel.count,
+                                  itemBuilder: (ctx, index) => AnimationConfiguration.staggeredList(
+                                    position: index,
+                                    duration: const Duration(milliseconds: 375),
+                                    child: SlideAnimation(
+                                      verticalOffset: 50.0,
+                                      child: FadeInAnimation(
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Navigator.of(context).pushNamed(
+                                              DetailRestaurantPage.routeName,
+                                              arguments: restaurant.restaurantModel.restaurants[index],
+                                            );
+                                          },
+                                          child: ItemListRestaurant(
+                                            restaurants: restaurant.restaurantModel.restaurants[index],
+                                          ),
                                         ),
                                       ),
                                     ),

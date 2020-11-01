@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:restoran_app_dicoding/const/const.dart';
+import 'package:restoran_app_dicoding/controller/restaurant_controller.dart';
 import 'package:restoran_app_dicoding/ui/page/detail_restaurat.dart';
 import 'package:restoran_app_dicoding/ui/page/home_page.dart';
 import 'package:restoran_app_dicoding/ui/page/splash_screen.dart';
@@ -38,33 +40,37 @@ Widget getErrorWidget(FlutterErrorDetails error) {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     ErrorWidget.builder = getErrorWidget;
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Restaurant App',
-      theme: ThemeData(
-        primaryColor: primaryColor,
-        accentColor: secondaryColor,
-        scaffoldBackgroundColor: Colors.white,
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        textTheme: myTextTheme,
-        appBarTheme: AppBarTheme(
-          textTheme: myTextTheme.apply(bodyColor: Colors.black),
-          elevation: 0,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => RestaurantController()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Restaurant App',
+        theme: ThemeData(
+          primaryColor: primaryColor,
+          accentColor: secondaryColor,
+          scaffoldBackgroundColor: Colors.white,
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          textTheme: myTextTheme,
+          appBarTheme: AppBarTheme(
+            textTheme: myTextTheme.apply(bodyColor: Colors.black),
+            elevation: 0,
+          ),
         ),
+        initialRoute: SplashScreen.routeName,
+        routes: {
+          SplashScreen.routeName: (ctx) => SplashScreen(),
+          HomePage.routeName: (ctx) => HomePage(),
+          DetailRestaurantPage.routeName: (ctx) => DetailRestaurantPage(
+                restaurant: ModalRoute.of(ctx).settings.arguments,
+              ),
+        },
       ),
-      initialRoute: SplashScreen.routeName,
-      routes: {
-        SplashScreen.routeName: (ctx) => SplashScreen(),
-        HomePage.routeName: (ctx) => HomePage(),
-        DetailRestaurantPage.routeName: (ctx) => DetailRestaurantPage(
-              restaurant: ModalRoute.of(ctx).settings.arguments,
-            ),
-      },
     );
   }
 }
