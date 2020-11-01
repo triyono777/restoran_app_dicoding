@@ -6,6 +6,7 @@ import 'package:restoran_app_dicoding/controller/restaurant_controller.dart';
 import 'package:restoran_app_dicoding/model/restaurant_model.dart';
 import 'package:restoran_app_dicoding/ui/widgets/item_menu_widget.dart';
 import 'package:restoran_app_dicoding/const/const.dart' as helper;
+import 'package:restoran_app_dicoding/ui/widgets/template_text_form_field.dart';
 
 class DetailRestaurantPage extends StatelessWidget {
   static const routeName = '/DetailRestaurantPage';
@@ -82,7 +83,9 @@ class DetailRestaurantPage extends StatelessWidget {
                         Icons.add,
                         color: helper.primaryColor,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        _addReview(context);
+                      },
                       label: Text(
                         'add review',
                         style: myTextTheme.bodyText1.copyWith(color: helper.primaryColor),
@@ -196,5 +199,49 @@ class DetailRestaurantPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  _addReview(BuildContext context) {
+    TextEditingController name = TextEditingController();
+    TextEditingController review = TextEditingController();
+    GlobalKey<FormState> _formKey = GlobalKey();
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        child: AlertDialog(
+          title: Text("Add Review"),
+          content: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TemplateTextFormField(
+                  controller: name,
+                  label: 'Nama',
+                ),
+                TemplateTextFormField(
+                  controller: review,
+                  label: 'Review',
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            RaisedButton(
+              onPressed: () {
+                if (_formKey.currentState.validate()) {
+                  print('oke');
+                }
+              },
+              child: Text('ok'),
+            ),
+            RaisedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancel'),
+            )
+          ],
+        ));
   }
 }
