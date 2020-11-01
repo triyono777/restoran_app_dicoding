@@ -201,9 +201,9 @@ class DetailRestaurantPage extends StatelessWidget {
     );
   }
 
-  _addReview(BuildContext context) {
-    TextEditingController name = TextEditingController();
-    TextEditingController review = TextEditingController();
+  _addReview(BuildContext context) async {
+    TextEditingController _name = TextEditingController();
+    TextEditingController _review = TextEditingController();
     GlobalKey<FormState> _formKey = GlobalKey();
     showDialog(
         barrierDismissible: false,
@@ -216,11 +216,11 @@ class DetailRestaurantPage extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 TemplateTextFormField(
-                  controller: name,
+                  controller: _name,
                   label: 'Nama',
                 ),
                 TemplateTextFormField(
-                  controller: review,
+                  controller: _review,
                   label: 'Review',
                 ),
               ],
@@ -230,7 +230,19 @@ class DetailRestaurantPage extends StatelessWidget {
             RaisedButton(
               onPressed: () {
                 if (_formKey.currentState.validate()) {
-                  print('oke');
+                  Provider.of<RestaurantController>(context, listen: false)
+                      .addReview(
+                    id: restaurant.id,
+                    name: _name.text,
+                    review: _review.text,
+                  )
+                      .then((value) {
+                    if (!value) {
+                      Navigator.pop(context, true);
+                    } else {
+                      Navigator.pop(context, false);
+                    }
+                  });
                 }
               },
               child: Text('ok'),

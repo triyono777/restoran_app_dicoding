@@ -54,4 +54,23 @@ class RestaurantController extends ChangeNotifier {
       throw Exception('Failed to load search restaurant: $e');
     }
   }
+
+  // add review
+  Future<bool> addReview({String review, String name, String id}) async {
+    try {
+      _response = await http.post(
+        helper.review,
+        body: {
+          'id': id,
+          'name': name,
+          'review': review,
+        },
+      );
+      var result = json.decode(_response.body);
+      getRestaurantAll();
+      return result['error'];
+    } catch (e) {
+      throw Exception('Failed to add review restaurant: $e');
+    }
+  }
 }
