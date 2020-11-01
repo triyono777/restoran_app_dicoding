@@ -7,82 +7,85 @@ import 'package:restoran_app_dicoding/ui/page/detail_restaurat.dart';
 import 'package:restoran_app_dicoding/ui/widgets/item_list_restaurant.dart';
 import 'package:lottie/lottie.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   static const routeName = '/Homepage';
-
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  TextEditingController _search = TextEditingController();
-  @override
-  void initState() {
-    super.initState();
-  }
+  final TextEditingController _search = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     var restaurant = Provider.of<RestaurantController>(context, listen: false);
-    print(restaurant.showSearch);
     return Scaffold(
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            buildTitle(context),
-            Expanded(
-              child: RefreshIndicator(
-                onRefresh: () async {
-                  restaurant.getRestaurantAll();
-                },
-                child: FutureBuilder<RestaurantModel>(
-                  future: restaurant.getRestaurantAll(),
-                  builder: (ctx, snapshot) => snapshot.connectionState == ConnectionState.waiting
-                      ? Center(
-                          child: Lottie.asset(
-                            'assets/animation/loading-animation.json',
-                          ),
-                        )
-                      : snapshot.hasError
-                          ? Text('terjadi kesalahan load data ${snapshot.error}')
-                          : Consumer<RestaurantController>(
-                              builder: (ctx, restaurant, ch) => AnimationLimiter(
-                                child: ListView.builder(
-                                  itemCount: restaurant.restaurantModel.restaurants.length,
-                                  itemBuilder: (ctx, index) => AnimationConfiguration.staggeredList(
-                                    position: index,
-                                    duration: const Duration(milliseconds: 375),
-                                    child: SlideAnimation(
-                                      verticalOffset: 50.0,
-                                      child: FadeInAnimation(
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            Navigator.of(context).pushNamed(
-                                              DetailRestaurantPage.routeName,
-                                              arguments: restaurant.restaurantModel.restaurants[index],
-                                            );
-                                          },
-                                          child: ItemListRestaurant(
-                                            restaurants: restaurant.restaurantModel.restaurants[index],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                ),
-              ),
-            ),
+            _buildTitle(context),
+            _buildListRestaurant(restaurant, context),
           ],
         ),
       ),
     );
   }
 
-  Widget buildTitle(BuildContext context) {
+  Expanded _buildListRestaurant(RestaurantController restaurant, BuildContext context) {
+    return Expanded(
+      child: RefreshIndicator(
+        onRefresh: () async {
+          restaurant.getRestaurantAll();
+        },
+        child: FutureBuilder<RestaurantModel>(
+          future: restaurant.getRestaurantAll(),
+          builder: (ctx, snapshot) => snapshot.connectionState == ConnectionState.waiting
+              ? Center(
+                  child: Lottie.asset(
+                    'assets/animation/loading-animation.json',
+                  ),
+                )
+              : snapshot.hasError
+                  ? Text('terjadi kesalahan load data ${snapshot.error}')
+                  : Consumer<RestaurantController>(
+                      builder: (ctx, restaurant, ch) => AnimationLimiter(
+                        child: ListView.builder(
+                          itemCount: restaurant.restaurantModel.restaurants.length,
+                          itemBuilder: (ctx, index) => restaurant.restaurantModel.restaurants.length == 0
+                              ? Center(
+                                  child: Lottie.asset(
+                                    'assets/animation/empty.json',
+                                  ),
+                                )
+                              : itemList(index, context, restaurant),
+                        ),
+                      ),
+                    ),
+        ),
+      ),
+    );
+  }
+
+  AnimationConfiguration itemList(int index, BuildContext context, RestaurantController restaurant) {
+    return AnimationConfiguration.staggeredList(
+      position: index,
+      duration: const Duration(milliseconds: 375),
+      child: SlideAnimation(
+        verticalOffset: 50.0,
+        child: FadeInAnimation(
+          child: GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamed(
+                DetailRestaurantPage.routeName,
+                arguments: restaurant.restaurantModel.restaurants[index],
+              );
+            },
+            child: ItemListRestaurant(
+              restaurants: restaurant.restaurantModel.restaurants[index],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTitle(BuildContext context) {
     var restaurant = Provider.of<RestaurantController>(context, listen: false);
 
     return Consumer<RestaurantController>(

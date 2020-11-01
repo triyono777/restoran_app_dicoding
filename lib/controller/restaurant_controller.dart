@@ -18,28 +18,40 @@ class RestaurantController extends ChangeNotifier {
 
   // untuk get all restaurant
   Future<RestaurantModel> getRestaurantAll() async {
-    _response = await http.get(helper.list);
-    var result = json.decode(_response.body);
-    restaurantModel = RestaurantModel.fromJson(result);
-    notifyListeners();
-    return restaurantModel;
+    try {
+      _response = await http.get(helper.list);
+      var result = json.decode(_response.body);
+      restaurantModel = RestaurantModel.fromJson(result);
+      notifyListeners();
+      return restaurantModel;
+    } catch (e) {
+      throw Exception('Failed to load restaurant: $e');
+    }
   }
 
 // get detail restaurant
   Future<DetailRestaurantModel> getDetailRestaurant(String idRestaurant) async {
-    _response = await http.get(helper.detail + idRestaurant);
-    var result = json.decode(_response.body);
-    detailRestaurantModel = DetailRestaurantModel.fromJson(result);
-    notifyListeners();
-    return detailRestaurantModel;
+    try {
+      _response = await http.get(helper.detail + idRestaurant);
+      var result = json.decode(_response.body);
+      detailRestaurantModel = DetailRestaurantModel.fromJson(result);
+      notifyListeners();
+      return detailRestaurantModel;
+    } catch (e) {
+      throw Exception('Failed to load detail restaurant: $e');
+    }
   }
 
   // pencarian restaurant
   Future<RestaurantModel> searchRestaurant(String search) async {
-    _response = await http.get(helper.search + search);
-    var result = json.decode(_response.body);
-    restaurantModel = RestaurantModel.fromJson(result);
-    notifyListeners();
-    return restaurantModel;
+    try {
+      _response = await http.get(helper.search + search);
+      var result = json.decode(_response.body);
+      restaurantModel = RestaurantModel.fromJson(result);
+      notifyListeners();
+      return restaurantModel;
+    } catch (e) {
+      throw Exception('Failed to load search restaurant: $e');
+    }
   }
 }
