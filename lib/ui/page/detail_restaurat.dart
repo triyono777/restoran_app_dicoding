@@ -73,7 +73,23 @@ class DetailRestaurantPage extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
-                buildText('Customer Review'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    buildText('Customer Review'),
+                    FlatButton.icon(
+                      icon: Icon(
+                        Icons.add,
+                        color: helper.primaryColor,
+                      ),
+                      onPressed: () {},
+                      label: Text(
+                        'add review',
+                        style: myTextTheme.bodyText1.copyWith(color: helper.primaryColor),
+                      ),
+                    ),
+                  ],
+                ),
                 _buildReview(detail, context),
                 SizedBox(
                   height: 20,
@@ -128,18 +144,17 @@ class DetailRestaurantPage extends StatelessWidget {
                     Expanded(
                       child: Text(
                         detail.detailRestaurantModel.restaurant.customerReviews[index].review,
+                        style: myTextTheme.bodyText1,
                       ),
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
                           flex: 3,
                           child: _buildTextReview(detail.detailRestaurantModel.restaurant.customerReviews[index].date),
                         ),
-                        Expanded(
-                          flex: 2,
-                          child: _buildTextReview(detail.detailRestaurantModel.restaurant.customerReviews[index].name),
-                        ),
+                        _buildTextReview(detail.detailRestaurantModel.restaurant.customerReviews[index].name),
                       ],
                     )
                   ],
