@@ -24,7 +24,7 @@ final TextTheme myTextTheme = TextTheme(
 final String baseUrl = 'https://restaurant-api.dicoding.dev';
 final String list = baseUrl + '/list';
 final String detail = baseUrl + '/detail/';
-final String search = baseUrl + '/search';
+final String search = baseUrl + '/search?q=';
 final String review = baseUrl + '/review';
 final String imageSmall = baseUrl + '/images/small/';
 final String imageMedium = baseUrl + '/images/medium/';

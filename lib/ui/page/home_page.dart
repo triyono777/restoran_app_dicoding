@@ -14,36 +14,30 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
-  AnimationController _controller;
+class _HomePageState extends State<HomePage> {
+  TextEditingController _search = TextEditingController();
   @override
   void initState() {
     super.initState();
-
-    _controller = AnimationController(vsync: this);
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    var restaurant = Provider.of<RestaurantController>(context, listen: false);
+    print(restaurant.showSearch);
     return Scaffold(
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            buildTitle(),
+            buildTitle(context),
             Expanded(
               child: RefreshIndicator(
                 onRefresh: () async {
-                  Provider.of<RestaurantController>(context, listen: false).getRestaurantAll();
+                  restaurant.getRestaurantAll();
                 },
                 child: FutureBuilder<RestaurantModel>(
-                  future: Provider.of<RestaurantController>(context, listen: false).getRestaurantAll(),
+                  future: restaurant.getRestaurantAll(),
                   builder: (ctx, snapshot) => snapshot.connectionState == ConnectionState.waiting
                       ? Center(
                           child: Lottie.asset(
@@ -55,7 +49,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           : Consumer<RestaurantController>(
                               builder: (ctx, restaurant, ch) => AnimationLimiter(
                                 child: ListView.builder(
-                                  itemCount: restaurant.restaurantModel.count,
+                                  itemCount: restaurant.restaurantModel.restaurants.length,
                                   itemBuilder: (ctx, index) => AnimationConfiguration.staggeredList(
                                     position: index,
                                     duration: const Duration(milliseconds: 375),
@@ -88,34 +82,71 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
   }
 
-  Widget buildTitle() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Stack(
-        overflow: Overflow.visible,
-        children: [
-          Positioned(
-            right: -100,
-            top: 5,
-            child: Image.asset(
-              'assets/logo/logo.png',
-              width: 100,
-              height: 100,
-              color: Colors.transparent.withOpacity(0.1),
-            ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Restaurant',
-                style: TextStyle(fontSize: 30),
+  Widget buildTitle(BuildContext context) {
+    var restaurant = Provider.of<RestaurantController>(context, listen: false);
+
+    return Consumer<RestaurantController>(
+      builder: (ctx, restaurantData, _) => restaurant.showSearch
+          ? Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: _search,
+                onChanged: (val) {
+                  restaurant.searchRestaurant(val);
+                },
+                decoration: InputDecoration(
+                    hintText: 'cari nama, menu',
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        _search.clear();
+                        restaurant.toggleSearch();
+                        restaurant.getRestaurantAll();
+                      },
+                      icon: Icon(Icons.clear),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    )),
               ),
-              Text('Recomended Restaurants for you'),
-            ],
-          ),
-        ],
-      ),
+            )
+          : Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Stack(
+                overflow: Overflow.visible,
+                children: [
+                  Positioned(
+                    right: 0,
+                    top: 5,
+                    child: Image.asset(
+                      'assets/logo/logo.png',
+                      width: 100,
+                      height: 100,
+                      color: Colors.transparent.withOpacity(0.1),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Restaurant',
+                            style: TextStyle(fontSize: 30),
+                          ),
+                          Text('Recomended Restaurants for you'),
+                        ],
+                      ),
+                      IconButton(
+                          icon: Icon(Icons.search),
+                          onPressed: () {
+                            restaurant.toggleSearch();
+                          }),
+                    ],
+                  ),
+                ],
+              ),
+            ),
     );
   }
 }

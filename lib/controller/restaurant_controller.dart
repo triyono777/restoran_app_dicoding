@@ -9,7 +9,14 @@ class RestaurantController extends ChangeNotifier {
   http.Response _response;
   RestaurantModel restaurantModel;
   DetailRestaurantModel detailRestaurantModel;
+  bool showSearch = false;
 
+  toggleSearch() {
+    showSearch = !showSearch;
+    notifyListeners();
+  }
+
+  // untuk get all restaurant
   Future<RestaurantModel> getRestaurantAll() async {
     _response = await http.get(helper.list);
     var result = json.decode(_response.body);
@@ -18,11 +25,21 @@ class RestaurantController extends ChangeNotifier {
     return restaurantModel;
   }
 
+// get detail restaurant
   Future<DetailRestaurantModel> getDetailRestaurant(String idRestaurant) async {
     _response = await http.get(helper.detail + idRestaurant);
     var result = json.decode(_response.body);
     detailRestaurantModel = DetailRestaurantModel.fromJson(result);
     notifyListeners();
     return detailRestaurantModel;
+  }
+
+  // pencarian restaurant
+  Future<RestaurantModel> searchRestaurant(String search) async {
+    _response = await http.get(helper.search + search);
+    var result = json.decode(_response.body);
+    restaurantModel = RestaurantModel.fromJson(result);
+    notifyListeners();
+    return restaurantModel;
   }
 }
