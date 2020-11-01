@@ -29,7 +29,7 @@ class DetailRestaurantPage extends StatelessWidget {
                     builder: (ctx, detailRest, _) => CustomScrollView(
                       slivers: [
                         _buildAppBar(detailRest),
-                        _buildBody(detailRest),
+                        _buildBody(detailRest, context),
                       ],
                     ),
                   ),
@@ -37,7 +37,7 @@ class DetailRestaurantPage extends StatelessWidget {
     );
   }
 
-  SliverList _buildBody(RestaurantController detail) {
+  SliverList _buildBody(RestaurantController detail, BuildContext context) {
     return SliverList(
       delegate: SliverChildListDelegate(
         [
@@ -73,6 +73,11 @@ class DetailRestaurantPage extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
+                buildText('Customer Review'),
+                _buildReview(detail, context),
+                SizedBox(
+                  height: 20,
+                ),
                 buildText('Foods Menu'),
                 Container(
                   height: 180,
@@ -100,6 +105,57 @@ class DetailRestaurantPage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Container _buildReview(RestaurantController detail, BuildContext context) {
+    return Container(
+      height: 150,
+      child: ListView.builder(
+        itemCount: detail.detailRestaurantModel.restaurant.customerReviews?.length ?? 0,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (ctx, index) => Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Card(
+            color: helper.secondaryColor.withOpacity(0.3),
+            child: LimitedBox(
+              maxWidth: MediaQuery.of(context).size.width / 1.5,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        detail.detailRestaurantModel.restaurant.customerReviews[index].review,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: _buildTextReview(detail.detailRestaurantModel.restaurant.customerReviews[index].date),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: _buildTextReview(detail.detailRestaurantModel.restaurant.customerReviews[index].name),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Text _buildTextReview(String content) {
+    return Text(
+      content,
+      style: myTextTheme.subtitle2.copyWith(color: Colors.white, fontStyle: FontStyle.italic),
     );
   }
 
