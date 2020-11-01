@@ -18,7 +18,7 @@ class RestaurantController extends ChangeNotifier {
     return restaurantModel;
   }
 
-  Future<DetailRestaurantModel> getDetailRestaurant(idRestaurant) async {
+  Future<DetailRestaurantModel> getDetailRestaurant(String idRestaurant) async {
     _response = await http.get(helper.detail + idRestaurant);
     var result = json.decode(_response.body);
     detailRestaurantModel = DetailRestaurantModel.fromJson(result);
