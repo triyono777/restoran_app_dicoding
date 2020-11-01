@@ -7,8 +7,14 @@ import 'package:http/http.dart' as http;
 class RestaurantController {
   http.Response _response;
 
-  Future<RestaurantModel> getRestaurant() async {
+  Future<RestaurantModel> getRestaurantAll() async {
     _response = await http.get(helper.list);
+    var result = json.decode(_response.body);
+    return RestaurantModel.fromJson(result);
+  }
+
+  Future<RestaurantModel> getDetailRestaurant(idRestaurant) async {
+    _response = await http.get(helper.detail + idRestaurant);
     var result = json.decode(_response.body);
     return RestaurantModel.fromJson(result);
   }

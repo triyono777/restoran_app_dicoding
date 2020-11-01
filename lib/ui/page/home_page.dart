@@ -39,10 +39,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             Expanded(
               child: RefreshIndicator(
                 onRefresh: () async {
-                  RestaurantController().getRestaurant();
+                  RestaurantController().getRestaurantAll();
                 },
                 child: FutureBuilder<RestaurantModel>(
-                  future: RestaurantController().getRestaurant(),
+                  future: RestaurantController().getRestaurantAll(),
                   builder: (ctx, snapshot) => snapshot.connectionState == ConnectionState.waiting
                       ? Center(
                           child: Lottie.asset(
