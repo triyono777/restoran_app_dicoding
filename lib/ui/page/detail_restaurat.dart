@@ -229,6 +229,16 @@ class DetailRestaurantPage extends StatelessWidget {
           actions: [
             RaisedButton(
               onPressed: () {
+                Navigator.pop(context);
+              },
+              color: Colors.grey,
+              child: Text(
+                'Cancel',
+                style: helper.myTextTheme.button.copyWith(color: Colors.white),
+              ),
+            ),
+            RaisedButton(
+              onPressed: () {
                 if (_formKey.currentState.validate()) {
                   Provider.of<RestaurantController>(context, listen: false)
                       .addReview(
@@ -245,14 +255,12 @@ class DetailRestaurantPage extends StatelessWidget {
                   });
                 }
               },
-              child: Text('ok'),
+              child: Text(
+                'ok',
+                style: helper.myTextTheme.button,
+              ),
+              color: helper.primaryColor,
             ),
-            RaisedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('Cancel'),
-            )
           ],
         ));
   }

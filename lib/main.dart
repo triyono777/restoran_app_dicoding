@@ -51,6 +51,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Restaurant App',
         theme: ThemeData(
+          buttonTheme: ButtonThemeData(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
           primaryColor: primaryColor,
           accentColor: secondaryColor,
           scaffoldBackgroundColor: Colors.white,
