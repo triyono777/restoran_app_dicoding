@@ -31,7 +31,7 @@ class RestaurantData {
   String pictureId;
   List<Categories> categories;
   Menus menus;
-  double rating;
+  var rating;
   List<CustomerReviews> customerReviews;
 
   RestaurantData({this.id, this.name, this.description, this.city, this.address, this.pictureId, this.categories, this.menus, this.rating, this.customerReviews});
