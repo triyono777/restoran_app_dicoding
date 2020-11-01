@@ -20,7 +20,7 @@ class ItemMenuWidget extends StatelessWidget {
         width: 150,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          image: DecorationImage(image: imageUrl == null ? NetworkImage(imageUrl) : AssetImage('assets/logo/makan_minum.png'), fit: BoxFit.scaleDown),
+          image: DecorationImage(image: imageUrl == null ? NetworkImage('https://restaurant-api.dicoding.dev/images/medium/' + imageUrl) : AssetImage('assets/logo/makan_minum.png'), fit: BoxFit.scaleDown),
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),

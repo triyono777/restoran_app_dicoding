@@ -60,22 +60,25 @@ class DetailRestaurantPage extends StatelessWidget {
                 Container(
                   height: 180,
                   child: ListView.builder(
-                    itemCount: restaurant.menus.foods.length,
+//                    itemCount: restaurant.,
+                    itemCount: 1,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (ctx, index) => ItemMenuWidget(
-                      name: restaurant.menus.foods[index].name,
-                    ),
+//                      name: restaurant.menus.foods[index].name,
+
+                        ),
                   ),
                 ),
                 buildText('Drinks Menu '),
                 Container(
                   height: 180,
                   child: ListView.builder(
-                    itemCount: restaurant.menus.drinks.length,
+//                    itemCount: restaurant.menus.drinks.length,
+                    itemCount: 1,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (ctx, index) => ItemMenuWidget(
-                      name: restaurant.menus.drinks[index].name,
-                    ),
+//                      name: restaurant.menus.drinks[index].name,
+                        ),
                   ),
                 ),
               ],

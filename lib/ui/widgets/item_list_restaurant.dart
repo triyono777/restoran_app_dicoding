@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:restoran_app_dicoding/const/const.dart';
 import 'package:restoran_app_dicoding/model/restaurant_model.dart';
+import 'package:restoran_app_dicoding/const/const.dart' as helper;
 
 class ItemListRestaurant extends StatelessWidget {
   final Restaurants restaurants;
@@ -17,7 +18,7 @@ class ItemListRestaurant extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
           child: Image.network(
-            restaurants.pictureId,
+            helper.imageMedium + restaurants.pictureId.toString(),
             fit: BoxFit.cover,
             width: 100,
             height: 150,

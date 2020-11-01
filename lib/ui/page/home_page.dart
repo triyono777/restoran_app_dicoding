@@ -39,19 +39,21 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             Expanded(
               child: RefreshIndicator(
                 onRefresh: () async {
-                  RestaurantController().getRestaurant(context);
+                  RestaurantController().getRestaurant();
                 },
                 child: FutureBuilder<RestaurantModel>(
-                  future: RestaurantController().getRestaurant(context),
+                  future: RestaurantController().getRestaurant(),
                   builder: (ctx, snapshot) => snapshot.connectionState == ConnectionState.waiting
-                      ? Lottie.asset(
-                          'assets/animation/loading.json',
+                      ? Center(
+                          child: Lottie.asset(
+                            'assets/animation/loading-animation.json',
+                          ),
                         )
                       : snapshot.hasError
                           ? Text('terjadi kesalahan load data ${snapshot.error}')
                           : AnimationLimiter(
                               child: ListView.builder(
-                                itemCount: snapshot.data.restaurants.length,
+                                itemCount: snapshot.data.count,
                                 itemBuilder: (ctx, index) => AnimationConfiguration.staggeredList(
                                   position: index,
                                   duration: const Duration(milliseconds: 375),

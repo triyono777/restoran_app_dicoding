@@ -1,9 +1,15 @@
 class RestaurantModel {
+  bool error;
+  String message;
+  int count;
   List<Restaurants> restaurants;
 
-  RestaurantModel({this.restaurants});
+  RestaurantModel({this.error, this.message, this.count, this.restaurants});
 
   RestaurantModel.fromJson(Map<String, dynamic> json) {
+    error = json['error'];
+    message = json['message'];
+    count = json['count'];
     if (json['restaurants'] != null) {
       restaurants = new List<Restaurants>();
       json['restaurants'].forEach((v) {
@@ -14,6 +20,9 @@ class RestaurantModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['error'] = this.error;
+    data['message'] = this.message;
+    data['count'] = this.count;
     if (this.restaurants != null) {
       data['restaurants'] = this.restaurants.map((v) => v.toJson()).toList();
     }
@@ -28,9 +37,8 @@ class Restaurants {
   String pictureId;
   String city;
   var rating;
-  Menus menus;
 
-  Restaurants({this.id, this.name, this.description, this.pictureId, this.city, this.rating, this.menus});
+  Restaurants({this.id, this.name, this.description, this.pictureId, this.city, this.rating});
 
   Restaurants.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -39,7 +47,6 @@ class Restaurants {
     pictureId = json['pictureId'];
     city = json['city'];
     rating = json['rating'];
-    menus = json['menus'] != null ? new Menus.fromJson(json['menus']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -50,74 +57,6 @@ class Restaurants {
     data['pictureId'] = this.pictureId;
     data['city'] = this.city;
     data['rating'] = this.rating;
-    if (this.menus != null) {
-      data['menus'] = this.menus.toJson();
-    }
-    return data;
-  }
-}
-
-class Menus {
-  List<Foods> foods;
-  List<Drinks> drinks;
-
-  Menus({this.foods, this.drinks});
-
-  Menus.fromJson(Map<String, dynamic> json) {
-    if (json['foods'] != null) {
-      foods = new List<Foods>();
-      json['foods'].forEach((v) {
-        foods.add(new Foods.fromJson(v));
-      });
-    }
-    if (json['drinks'] != null) {
-      drinks = new List<Drinks>();
-      json['drinks'].forEach((v) {
-        drinks.add(new Drinks.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.foods != null) {
-      data['foods'] = this.foods.map((v) => v.toJson()).toList();
-    }
-    if (this.drinks != null) {
-      data['drinks'] = this.drinks.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
-class Foods {
-  String name;
-
-  Foods({this.name});
-
-  Foods.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    return data;
-  }
-}
-
-class Drinks {
-  String name;
-
-  Drinks({this.name});
-
-  Drinks.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
     return data;
   }
 }
