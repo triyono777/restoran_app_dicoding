@@ -11,10 +11,10 @@ import 'package:restoran_app_dicoding/ui/widgets/template_text_form_field.dart';
 class DetailRestaurantPage extends StatelessWidget {
   static const routeName = '/DetailRestaurantPage';
   final Restaurants restaurant;
-  final String id;
+  final String pictureId;
   final String name;
   final String city;
-  const DetailRestaurantPage({Key key, @required this.restaurant, this.id, this.name, this.city}) : super(key: key);
+  const DetailRestaurantPage({Key key, @required this.restaurant, this.pictureId, this.name, this.city}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,102 +24,106 @@ class DetailRestaurantPage extends StatelessWidget {
         builder: (ctx, snapshot) => snapshot.hasError
             ? Center(child: Text('terjadi kesalahan load data ${snapshot.error}'))
             : Consumer<RestaurantController>(
-                builder: (ctx, detailRest, _) => CustomScrollView(
-                  slivers: [
-                    _buildAppBar(detailRest),
-                    SliverList(
-                      delegate: SliverChildListDelegate(
-                        [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '$name',
-                                  style: myTextTheme.headline5,
-                                ),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.pin_drop,
-                                      size: myTextTheme.subtitle1.fontSize,
-                                    ),
-                                    Text(
-                                      '$city',
-                                      style: myTextTheme.subtitle1,
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Column(
-                                  children: [
-                                    Text(
-                                      '${detailRest.detailRestaurantModel.restaurant.description}',
-                                      textAlign: TextAlign.justify,
-                                      style: myTextTheme.bodyText1,
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        buildText('Customer Review'),
-                                        FlatButton.icon(
-                                          icon: Icon(
-                                            Icons.add,
-                                            color: helper.primaryColor,
-                                          ),
-                                          onPressed: () {
-                                            _addReview(context);
-                                          },
-                                          label: Text(
-                                            'add review',
-                                            style: myTextTheme.bodyText1.copyWith(color: helper.primaryColor),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    _buildReview(detailRest, context),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    buildText('Foods Menu'),
-                                    Container(
-                                      height: 180,
-                                      child: ListView.builder(
-                                        itemCount: detailRest.detailRestaurantModel.restaurant.menus.foods.length,
-                                        scrollDirection: Axis.horizontal,
-                                        itemBuilder: (ctx, index) => ItemMenuWidget(
-                                          name: detailRest.detailRestaurantModel.restaurant.menus.foods[index].name,
-                                        ),
+                builder: (ctx, detailRest, _) => detailRest?.restaurantModel == null
+                    ? Text('loading')
+                    : CustomScrollView(
+                        slivers: [
+//                          _buildAppBar(detailRest),
+                          SliverList(
+                            delegate: SliverChildListDelegate(
+                              [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '$name',
+                                        style: myTextTheme.headline5,
                                       ),
-                                    ),
-                                    buildText('Drinks Menu '),
-                                    Container(
-                                      height: 180,
-                                      child: ListView.builder(
-                                        itemCount: detailRest.detailRestaurantModel.restaurant.menus.drinks.length,
-                                        scrollDirection: Axis.horizontal,
-                                        itemBuilder: (ctx, index) => ItemMenuWidget(
-                                          name: detailRest.detailRestaurantModel.restaurant.menus.drinks[index].name,
-                                        ),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.pin_drop,
+                                            size: myTextTheme.subtitle1.fontSize,
+                                          ),
+                                          Text(
+                                            '$city',
+                                            style: myTextTheme.subtitle1,
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                  ],
-                                )
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      detailRest?.detailRestaurantModel?.restaurant == null
+                                          ? Text('loading')
+                                          : Column(
+                                              children: [
+                                                Text(
+                                                  '${detailRest.detailRestaurantModel.restaurant.description}',
+                                                  textAlign: TextAlign.justify,
+                                                  style: myTextTheme.bodyText1,
+                                                ),
+                                                SizedBox(
+                                                  height: 20,
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    buildText('Customer Review'),
+                                                    FlatButton.icon(
+                                                      icon: Icon(
+                                                        Icons.add,
+                                                        color: helper.primaryColor,
+                                                      ),
+                                                      onPressed: () {
+                                                        _addReview(context);
+                                                      },
+                                                      label: Text(
+                                                        'add review',
+                                                        style: myTextTheme.bodyText1.copyWith(color: helper.primaryColor),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                _buildReview(detailRest, context),
+                                                SizedBox(
+                                                  height: 20,
+                                                ),
+                                                buildText('Foods Menu'),
+                                                Container(
+                                                  height: 180,
+                                                  child: ListView.builder(
+                                                    itemCount: detailRest.detailRestaurantModel.restaurant.menus.foods.length,
+                                                    scrollDirection: Axis.horizontal,
+                                                    itemBuilder: (ctx, index) => ItemMenuWidget(
+                                                      name: detailRest.detailRestaurantModel.restaurant.menus.foods[index].name,
+                                                    ),
+                                                  ),
+                                                ),
+                                                buildText('Drinks Menu '),
+                                                Container(
+                                                  height: 180,
+                                                  child: ListView.builder(
+                                                    itemCount: detailRest.detailRestaurantModel.restaurant.menus.drinks.length,
+                                                    scrollDirection: Axis.horizontal,
+                                                    itemBuilder: (ctx, index) => ItemMenuWidget(
+                                                      name: detailRest.detailRestaurantModel.restaurant.menus.drinks[index].name,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
                           ),
+                          _buildBody(detailRest, context),
                         ],
                       ),
-                    ),
-                    _buildBody(detailRest, context),
-                  ],
-                ),
               ),
       ),
     );
@@ -163,63 +167,65 @@ class DetailRestaurantPage extends StatelessWidget {
   }
 
   Column buildDetail(RestaurantController detail, BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          '${detail.detailRestaurantModel.restaurant.description}',
-          textAlign: TextAlign.justify,
-          style: myTextTheme.bodyText1,
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            buildText('Customer Review'),
-            FlatButton.icon(
-              icon: Icon(
-                Icons.add,
-                color: helper.primaryColor,
+    return detail?.restaurantModel == null
+        ? Text('loading')
+        : Column(
+            children: [
+              Text(
+                '${detail.detailRestaurantModel.restaurant.description}',
+                textAlign: TextAlign.justify,
+                style: myTextTheme.bodyText1,
               ),
-              onPressed: () {
-                _addReview(context);
-              },
-              label: Text(
-                'add review',
-                style: myTextTheme.bodyText1.copyWith(color: helper.primaryColor),
+              SizedBox(
+                height: 20,
               ),
-            ),
-          ],
-        ),
-        _buildReview(detail, context),
-        SizedBox(
-          height: 20,
-        ),
-        buildText('Foods Menu'),
-        Container(
-          height: 180,
-          child: ListView.builder(
-            itemCount: detail.detailRestaurantModel.restaurant.menus.foods.length,
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (ctx, index) => ItemMenuWidget(
-              name: detail.detailRestaurantModel.restaurant.menus.foods[index].name,
-            ),
-          ),
-        ),
-        buildText('Drinks Menu '),
-        Container(
-          height: 180,
-          child: ListView.builder(
-            itemCount: detail.detailRestaurantModel.restaurant.menus.drinks.length,
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (ctx, index) => ItemMenuWidget(
-              name: detail.detailRestaurantModel.restaurant.menus.drinks[index].name,
-            ),
-          ),
-        ),
-      ],
-    );
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  buildText('Customer Review'),
+                  FlatButton.icon(
+                    icon: Icon(
+                      Icons.add,
+                      color: helper.primaryColor,
+                    ),
+                    onPressed: () {
+                      _addReview(context);
+                    },
+                    label: Text(
+                      'add review',
+                      style: myTextTheme.bodyText1.copyWith(color: helper.primaryColor),
+                    ),
+                  ),
+                ],
+              ),
+              _buildReview(detail, context),
+              SizedBox(
+                height: 20,
+              ),
+              buildText('Foods Menu'),
+              Container(
+                height: 180,
+                child: ListView.builder(
+                  itemCount: detail.detailRestaurantModel.restaurant.menus.foods.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (ctx, index) => ItemMenuWidget(
+                    name: detail.detailRestaurantModel.restaurant.menus.foods[index].name,
+                  ),
+                ),
+              ),
+              buildText('Drinks Menu '),
+              Container(
+                height: 180,
+                child: ListView.builder(
+                  itemCount: detail.detailRestaurantModel.restaurant.menus.drinks.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (ctx, index) => ItemMenuWidget(
+                    name: detail.detailRestaurantModel.restaurant.menus.drinks[index].name,
+                  ),
+                ),
+              ),
+            ],
+          );
   }
 
   Container _buildReview(RestaurantController detail, BuildContext context) {
@@ -289,8 +295,8 @@ class DetailRestaurantPage extends StatelessWidget {
       expandedHeight: 300.0,
       flexibleSpace: FlexibleSpaceBar(
         background: Hero(
-          tag: id,
-          child: Image.network(helper.imageLarge + id, fit: BoxFit.cover),
+          tag: pictureId,
+          child: Image.network(helper.imageLarge + pictureId, fit: BoxFit.cover),
         ),
       ),
     );

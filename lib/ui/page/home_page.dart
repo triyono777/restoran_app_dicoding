@@ -80,7 +80,7 @@ class HomePage extends StatelessWidget {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (ctx) => DetailRestaurantPage(
                         restaurant: restaurant.restaurantModel.restaurants[index],
-                        id: restaurant.restaurantModel.restaurants[index].pictureId,
+                        pictureId: restaurant.restaurantModel.restaurants[index].pictureId,
                         name: restaurant.restaurantModel.restaurants[index].name,
                         city: restaurant.restaurantModel.restaurants[index].city,
                       )));
