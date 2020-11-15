@@ -5,16 +5,18 @@ import 'package:restoran_app_dicoding/const/const.dart' as helper;
 
 class ItemListRestaurant extends StatelessWidget {
   final Restaurants restaurants;
+  final String idHero;
   const ItemListRestaurant({
     Key key,
     this.restaurants,
+    this.idHero,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       leading: Hero(
-        tag: restaurants.pictureId,
+        tag: idHero,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
           child: Image.network(

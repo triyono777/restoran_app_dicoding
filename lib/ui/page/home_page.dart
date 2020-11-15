@@ -71,13 +71,17 @@ class HomePage extends StatelessWidget {
         child: FadeInAnimation(
           child: GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamed(
-                DetailRestaurantPage.routeName,
-                arguments: restaurant.restaurantModel.restaurants[index],
-              );
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => DetailRestaurantPage(
+                        restaurant: restaurant.restaurantModel.restaurants[index],
+                        id: restaurant.restaurantModel.restaurants[index].pictureId,
+                        name: restaurant.restaurantModel.restaurants[index].name,
+                        city: restaurant.restaurantModel.restaurants[index].city,
+                      )));
             },
             child: ItemListRestaurant(
               restaurants: restaurant.restaurantModel.restaurants[index],
+              idHero: restaurant.restaurantModel.restaurants[index].pictureId,
             ),
           ),
         ),

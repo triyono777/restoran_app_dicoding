@@ -11,29 +11,26 @@ import 'package:restoran_app_dicoding/ui/widgets/template_text_form_field.dart';
 class DetailRestaurantPage extends StatelessWidget {
   static const routeName = '/DetailRestaurantPage';
   final Restaurants restaurant;
-  const DetailRestaurantPage({Key key, @required this.restaurant}) : super(key: key);
+  final String id;
+  final String name;
+  final String city;
+  const DetailRestaurantPage({Key key, @required this.restaurant, this.id, this.name, this.city}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
         future: Provider.of<RestaurantController>(context, listen: false).getDetailRestaurant(restaurant.id),
-        builder: (ctx, snapshot) => snapshot.connectionState == ConnectionState.waiting
-            ? Center(
-                child: Lottie.asset(
-                  'assets/animation/loading-animation.json',
+        builder: (ctx, snapshot) => snapshot.hasError
+            ? Center(child: Text('terjadi kesalahan load data ${snapshot.error}'))
+            : Consumer<RestaurantController>(
+                builder: (ctx, detailRest, _) => CustomScrollView(
+                  slivers: [
+                    _buildAppBar(detailRest),
+                    _buildBody(detailRest, context),
+                  ],
                 ),
-              )
-            : snapshot.hasError
-                ? Center(child: Text('terjadi kesalahan load data ${snapshot.error}'))
-                : Consumer<RestaurantController>(
-                    builder: (ctx, detailRest, _) => CustomScrollView(
-                      slivers: [
-                        _buildAppBar(detailRest),
-                        _buildBody(detailRest, context),
-                      ],
-                    ),
-                  ),
+              ),
       ),
     );
   }
@@ -48,7 +45,7 @@ class DetailRestaurantPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${detail.detailRestaurantModel.restaurant.name}',
+                  '$name',
                   style: myTextTheme.headline5,
                 ),
                 Row(
@@ -58,7 +55,7 @@ class DetailRestaurantPage extends StatelessWidget {
                       size: myTextTheme.subtitle1.fontSize,
                     ),
                     Text(
-                      '${detail.detailRestaurantModel.restaurant.city}',
+                      '$city',
                       style: myTextTheme.subtitle1,
                     ),
                   ],
@@ -195,7 +192,7 @@ class DetailRestaurantPage extends StatelessWidget {
       flexibleSpace: FlexibleSpaceBar(
         background: Hero(
           tag: detail.detailRestaurantModel.restaurant.pictureId,
-          child: Image.network(helper.imageLarge + detail.detailRestaurantModel.restaurant.pictureId, fit: BoxFit.cover),
+          child: Image.network(helper.imageLarge + id, fit: BoxFit.cover),
         ),
       ),
     );
