@@ -48,7 +48,9 @@ class RestaurantController extends ChangeNotifier {
       _response = await http.get(helper.search + search);
       var result = json.decode(_response.body);
       restaurantModel = RestaurantModel.fromJson(result);
+      print('resto = ' + restaurantModel.restaurants.length.toString());
       notifyListeners();
+
       return restaurantModel;
     } catch (e) {
       throw Exception('Failed to load search restaurant: $e');

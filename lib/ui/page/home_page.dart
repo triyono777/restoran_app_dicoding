@@ -45,16 +45,22 @@ class HomePage extends StatelessWidget {
                   ? Text('terjadi kesalahan load data ${snapshot.error}')
                   : Consumer<RestaurantController>(
                       builder: (ctx, restaurant, ch) => AnimationLimiter(
-                        child: ListView.builder(
-                          itemCount: restaurant.restaurantModel.restaurants.length,
-                          itemBuilder: (ctx, index) => restaurant.restaurantModel.restaurants.length == 0
-                              ? Center(
-                                  child: Lottie.asset(
-                                    'assets/animation/empty.json',
-                                  ),
-                                )
-                              : itemList(index, context, restaurant),
-                        ),
+                        child: restaurant.restaurantModel.restaurants.isEmpty
+                            ? Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Lottie.asset(
+                                      'assets/animation/empty.json',
+                                    ),
+                                    Text('Restaurant tidak ditemukan')
+                                  ],
+                                ),
+                              )
+                            : ListView.builder(
+                                itemCount: restaurant.restaurantModel.restaurants.length,
+                                itemBuilder: (ctx, index) => itemList(index, context, restaurant),
+                              ),
                       ),
                     ),
         ),
@@ -97,6 +103,8 @@ class HomePage extends StatelessWidget {
           ? Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
+                autofocus: true,
+                cursorColor: Theme.of(context).primaryColor,
                 controller: _search,
                 onChanged: (val) {
                   restaurant.searchRestaurant(val);
