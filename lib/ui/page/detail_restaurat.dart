@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:restoran_app_dicoding/const/const.dart';
 import 'package:restoran_app_dicoding/controller/db_controller.dart';
 import 'package:restoran_app_dicoding/controller/restaurant_controller.dart';
+import 'package:restoran_app_dicoding/model/detail_restaurant_model.dart';
 import 'package:restoran_app_dicoding/model/favorite_model.dart';
 import 'package:restoran_app_dicoding/model/restaurant_model.dart';
 import 'package:restoran_app_dicoding/ui/widgets/item_menu_widget.dart';
@@ -12,17 +13,17 @@ import 'package:restoran_app_dicoding/ui/widgets/template_text_form_field.dart';
 
 class DetailRestaurantPage extends StatelessWidget {
   static const routeName = '/DetailRestaurantPage';
-  final Restaurants restaurant;
+  final String id;
   final String pictureId;
   final String name;
   final String city;
-  const DetailRestaurantPage({Key key, @required this.restaurant, this.pictureId, this.name, this.city}) : super(key: key);
+  const DetailRestaurantPage({Key key, @required this.id, this.pictureId, this.name, this.city}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-        future: Provider.of<RestaurantController>(context, listen: false).getDetailRestaurant(restaurant.id),
+        future: Provider.of<RestaurantController>(context, listen: false).getDetailRestaurant(id),
         builder: (ctx, snapshot) => snapshot.hasError
             ? Center(child: Text('terjadi kesalahan load data ${snapshot.error}'))
             : Consumer<RestaurantController>(
@@ -144,10 +145,15 @@ class DetailRestaurantPage extends StatelessWidget {
                       size: 40,
                     ),
                     onPressed: () {
-                      Provider.of<DBController>(context, listen: false).addFavorite(FavoriteModel(
-                        idPicture: pictureId,
-                        idRestaurant: restaurant.id,
-                      ));
+//                      print(detailRest.detailRestaurantModel.restaurant.id.toString());
+                      Provider.of<DBController>(context, listen: false).addFavorite(
+                        favorite: FavoriteModel(
+                          idRestaurant: detailRest.detailRestaurantModel.restaurant.id,
+                          city: detailRest.detailRestaurantModel.restaurant.city,
+                          name: detailRest.detailRestaurantModel.restaurant.name,
+                          idPicture: detailRest.detailRestaurantModel.restaurant.pictureId,
+                        ),
+                      );
                     },
                   ),
                 ),
@@ -336,7 +342,7 @@ class DetailRestaurantPage extends StatelessWidget {
                 if (_formKey.currentState.validate()) {
                   Provider.of<RestaurantController>(context, listen: false)
                       .addReview(
-                    id: restaurant.id,
+                    id: id,
                     name: _name.text,
                     review: _review.text,
                   )

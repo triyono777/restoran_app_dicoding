@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:restoran_app_dicoding/controller/restaurant_controller.dart';
 import 'package:restoran_app_dicoding/model/restaurant_model.dart';
 import 'package:restoran_app_dicoding/ui/page/detail_restaurat.dart';
+import 'package:restoran_app_dicoding/ui/page/favorite_page.dart';
 import 'package:restoran_app_dicoding/ui/widgets/item_list_restaurant.dart';
 import 'package:lottie/lottie.dart';
 
@@ -79,7 +80,7 @@ class HomePage extends StatelessWidget {
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (ctx) => DetailRestaurantPage(
-                        restaurant: restaurant.restaurantModel.restaurants[index],
+                        id: restaurant.restaurantModel.restaurants[index].id,
                         pictureId: restaurant.restaurantModel.restaurants[index].pictureId,
                         name: restaurant.restaurantModel.restaurants[index].name,
                         city: restaurant.restaurantModel.restaurants[index].city,
@@ -162,7 +163,11 @@ class HomePage extends StatelessWidget {
                           IconButton(
                               icon: Icon(Icons.favorite),
                               onPressed: () {
-                                // todo: add favorite
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => FavoritePage(),
+                                  ),
+                                );
                               }),
                         ],
                       ),

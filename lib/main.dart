@@ -70,7 +70,7 @@ class MyApp extends StatelessWidget {
           SplashScreen.routeName: (ctx) => SplashScreen(),
           HomePage.routeName: (ctx) => HomePage(),
           DetailRestaurantPage.routeName: (ctx) => DetailRestaurantPage(
-                restaurant: ModalRoute.of(ctx).settings.arguments,
+                id: ModalRoute.of(ctx).settings.arguments,
               ),
         },
       ),

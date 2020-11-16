@@ -2,20 +2,23 @@ class FavoriteModel {
   String idRestaurant;
   String idPicture;
   String city;
+  String name;
 
-  FavoriteModel({this.idRestaurant, this.idPicture, this.city});
+  FavoriteModel({this.idRestaurant, this.idPicture, this.city, this.name});
 
   Map<String, dynamic> toMap() {
     return {
-      'restaurant_id': idRestaurant,
-      'picture_id': idPicture,
+      'id': idRestaurant,
+      'pictureId': idPicture,
       'city': city,
+      'name': name,
     };
   }
 
   FavoriteModel.fromMap(Map<String, dynamic> map) {
-    idRestaurant = map['restaurant_id'];
-    idPicture = map['picture_id'];
+    idRestaurant = map['id'];
+    idPicture = map['pictureId'];
     city = map['city'];
+    name = map['name'];
   }
 }

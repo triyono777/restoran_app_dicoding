@@ -1,9 +1,12 @@
+import 'package:restoran_app_dicoding/model/detail_restaurant_model.dart';
 import 'package:restoran_app_dicoding/model/favorite_model.dart';
+import 'package:restoran_app_dicoding/model/restaurant_model.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
   static DatabaseHelper _databaseHelper;
   static Database _database;
+
   DatabaseHelper._createObject();
   factory DatabaseHelper() {
     if (_databaseHelper == null) {
@@ -30,9 +33,10 @@ class DatabaseHelper {
       onCreate: (db, version) async {
         await db.execute(
           '''CREATE TABLE $_tableName (       
-               restaurant_id TEXT PRIMARY KEY,
-                picture_id TEXT,
-                city TEXT
+               id TEXT PRIMARY KEY,
+               name TEXT,
+               pictureId TEXT,
+               city TEXT
              )''',
         );
       },
