@@ -152,11 +152,20 @@ class HomePage extends StatelessWidget {
                           Text('Recomended Restaurants for you'),
                         ],
                       ),
-                      IconButton(
-                          icon: Icon(Icons.search),
-                          onPressed: () {
-                            restaurant.toggleSearch();
-                          }),
+                      Row(
+                        children: [
+                          IconButton(
+                              icon: Icon(Icons.search),
+                              onPressed: () {
+                                restaurant.toggleSearch();
+                              }),
+                          IconButton(
+                              icon: Icon(Icons.favorite),
+                              onPressed: () {
+                                // todo: add favorite
+                              }),
+                        ],
+                      ),
                     ],
                   ),
                 ],

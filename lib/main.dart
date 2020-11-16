@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restoran_app_dicoding/const/const.dart';
+import 'package:restoran_app_dicoding/controller/db_controller.dart';
 import 'package:restoran_app_dicoding/controller/restaurant_controller.dart';
 import 'package:restoran_app_dicoding/ui/page/detail_restaurat.dart';
 import 'package:restoran_app_dicoding/ui/page/home_page.dart';
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => RestaurantController()),
+        ChangeNotifierProvider(create: (_) => DBController()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

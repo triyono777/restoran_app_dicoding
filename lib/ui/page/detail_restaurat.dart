@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:restoran_app_dicoding/const/const.dart';
+import 'package:restoran_app_dicoding/controller/db_controller.dart';
 import 'package:restoran_app_dicoding/controller/restaurant_controller.dart';
+import 'package:restoran_app_dicoding/model/favorite_model.dart';
 import 'package:restoran_app_dicoding/model/restaurant_model.dart';
 import 'package:restoran_app_dicoding/ui/widgets/item_menu_widget.dart';
 import 'package:restoran_app_dicoding/const/const.dart' as helper;
@@ -43,91 +45,112 @@ class DetailRestaurantPage extends StatelessWidget {
         [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Stack(
+              overflow: Overflow.visible,
               children: [
-                Text(
-                  '$name',
-                  style: myTextTheme.headline5,
-                ),
-                Row(
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(
-                      Icons.pin_drop,
-                      size: myTextTheme.subtitle1.fontSize,
-                    ),
                     Text(
-                      '$city',
-                      style: myTextTheme.subtitle1,
+                      '$name',
+                      style: myTextTheme.headline5,
                     ),
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                detailRest?.detailRestaurantModel?.restaurant?.description == null
-                    ? Center(
-                        child: Lottie.asset(
-                          'assets/animation/loading-animation.json',
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.pin_drop,
+                          size: myTextTheme.subtitle1.fontSize,
                         ),
-                      )
-                    : Column(
-                        children: [
-                          Text(
-                            '${detailRest.detailRestaurantModel.restaurant.description}',
-                            textAlign: TextAlign.justify,
-                            style: myTextTheme.bodyText1,
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        Text(
+                          '$city',
+                          style: myTextTheme.subtitle1,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    detailRest?.detailRestaurantModel?.restaurant?.description == null
+                        ? Center(
+                            child: Lottie.asset(
+                              'assets/animation/loading-animation.json',
+                            ),
+                          )
+                        : Column(
                             children: [
-                              buildText('Customer Review'),
-                              FlatButton.icon(
-                                icon: Icon(
-                                  Icons.add,
-                                  color: helper.primaryColor,
+                              Text(
+                                '${detailRest.detailRestaurantModel.restaurant.description}',
+                                textAlign: TextAlign.justify,
+                                style: myTextTheme.bodyText1,
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  buildText('Customer Review'),
+                                  FlatButton.icon(
+                                    icon: Icon(
+                                      Icons.add,
+                                      color: helper.primaryColor,
+                                    ),
+                                    onPressed: () {
+                                      _addReview(context);
+                                    },
+                                    label: Text(
+                                      'add review',
+                                      style: myTextTheme.bodyText1.copyWith(color: helper.primaryColor),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              _buildReview(detailRest, context),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              buildText('Foods Menu'),
+                              Container(
+                                height: 180,
+                                child: ListView.builder(
+                                  itemCount: detailRest.detailRestaurantModel.restaurant.menus.foods.length,
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (ctx, index) => ItemMenuWidget(
+                                    name: detailRest.detailRestaurantModel.restaurant.menus.foods[index].name,
+                                  ),
                                 ),
-                                onPressed: () {
-                                  _addReview(context);
-                                },
-                                label: Text(
-                                  'add review',
-                                  style: myTextTheme.bodyText1.copyWith(color: helper.primaryColor),
+                              ),
+                              buildText('Drinks Menu '),
+                              Container(
+                                height: 180,
+                                child: ListView.builder(
+                                  itemCount: detailRest.detailRestaurantModel.restaurant.menus.drinks.length,
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (ctx, index) => ItemMenuWidget(
+                                    name: detailRest.detailRestaurantModel.restaurant.menus.drinks[index].name,
+                                  ),
                                 ),
                               ),
                             ],
-                          ),
-                          _buildReview(detailRest, context),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          buildText('Foods Menu'),
-                          Container(
-                            height: 180,
-                            child: ListView.builder(
-                              itemCount: detailRest.detailRestaurantModel.restaurant.menus.foods.length,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (ctx, index) => ItemMenuWidget(
-                                name: detailRest.detailRestaurantModel.restaurant.menus.foods[index].name,
-                              ),
-                            ),
-                          ),
-                          buildText('Drinks Menu '),
-                          Container(
-                            height: 180,
-                            child: ListView.builder(
-                              itemCount: detailRest.detailRestaurantModel.restaurant.menus.drinks.length,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (ctx, index) => ItemMenuWidget(
-                                name: detailRest.detailRestaurantModel.restaurant.menus.drinks[index].name,
-                              ),
-                            ),
-                          ),
-                        ],
-                      )
+                          )
+                  ],
+                ),
+                Positioned(
+                  top: 0,
+                  right: 10,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.favorite_border,
+                      size: 40,
+                    ),
+                    onPressed: () {
+                      Provider.of<DBController>(context, listen: false).addFavorite(FavoriteModel(
+                        idPicture: pictureId,
+                        idRestaurant: restaurant.id,
+                      ));
+                    },
+                  ),
+                ),
               ],
             ),
           ),
