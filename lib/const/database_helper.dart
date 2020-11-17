@@ -65,4 +65,13 @@ class DatabaseHelper {
     print(listFav.length);
     return listFav;
   }
+
+  Future<void> deleteFavorite(String id) async {
+    final db = await database;
+    await db.delete(
+      _tableName,
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
 }

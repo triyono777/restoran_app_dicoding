@@ -139,23 +139,39 @@ class DetailRestaurantPage extends StatelessWidget {
                 Positioned(
                   top: 0,
                   right: 10,
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.favorite_border,
-                      size: 40,
-                    ),
-                    onPressed: () {
-//                      print(detailRest.detailRestaurantModel.restaurant.id.toString());
-                      Provider.of<DBController>(context, listen: false).addFavorite(
-                        favorite: FavoriteModel(
-                          idRestaurant: detailRest.detailRestaurantModel.restaurant.id,
-                          city: detailRest.detailRestaurantModel.restaurant.city,
-                          name: detailRest.detailRestaurantModel.restaurant.name,
-                          idPicture: detailRest.detailRestaurantModel.restaurant.pictureId,
-                          rating: detailRest.detailRestaurantModel.restaurant.rating.toString(),
+                  child: Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          Icons.clear,
+                          size: 40,
                         ),
-                      );
-                    },
+                        onPressed: () {
+//                      print(detailRest.detailRestaurantModel.restaurant.id.toString());
+                          Provider.of<DBController>(context, listen: false).deleteFavorite(
+                            idFav: detailRest.detailRestaurantModel.restaurant.id,
+                          );
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.favorite_border,
+                          size: 40,
+                        ),
+                        onPressed: () {
+//
+                          Provider.of<DBController>(context, listen: false).addFavorite(
+                            favorite: FavoriteModel(
+                              idRestaurant: detailRest.detailRestaurantModel.restaurant.id,
+                              city: detailRest.detailRestaurantModel.restaurant.city,
+                              name: detailRest.detailRestaurantModel.restaurant.name,
+                              idPicture: detailRest.detailRestaurantModel.restaurant.pictureId,
+                              rating: detailRest.detailRestaurantModel.restaurant.rating.toString(),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ],

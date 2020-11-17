@@ -26,4 +26,9 @@ class DBController extends ChangeNotifier {
     notifyListeners();
     return _listFavorites;
   }
+
+  Future<void> deleteFavorite({String idFav}) async {
+    await _dbHelper.deleteFavorite(idFav);
+    getAllFavorite();
+  }
 }
