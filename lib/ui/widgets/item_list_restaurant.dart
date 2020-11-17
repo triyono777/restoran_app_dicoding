@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:restoran_app_dicoding/const/const.dart';
-import 'package:restoran_app_dicoding/model/restaurant_model.dart';
 import 'package:restoran_app_dicoding/const/const.dart' as helper;
 
 class ItemListRestaurant extends StatelessWidget {

@@ -89,6 +89,7 @@ class HomePage extends StatelessWidget {
                         pictureId: restaurant.restaurantModel.restaurants[index].pictureId,
                         name: restaurant.restaurantModel.restaurants[index].name,
                         city: restaurant.restaurantModel.restaurants[index].city,
+                        rating: restaurant.restaurantModel.restaurants[index].rating,
                       )));
             },
             child: ItemListRestaurant(

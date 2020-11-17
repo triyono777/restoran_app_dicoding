@@ -1,6 +1,4 @@
-import 'package:restoran_app_dicoding/model/detail_restaurant_model.dart';
 import 'package:restoran_app_dicoding/model/favorite_model.dart';
-import 'package:restoran_app_dicoding/model/restaurant_model.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
@@ -62,7 +60,7 @@ class DatabaseHelper {
     final Database db = await database;
     List<Map<String, dynamic>> results = await db.query(_tableName);
     List<FavoriteModel> listFav = results.map((res) => FavoriteModel.fromMap(res)).toList();
-    print(listFav.length);
+    print('total fav: ' + listFav.length.toString());
     return listFav;
   }
 

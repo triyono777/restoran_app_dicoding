@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:restoran_app_dicoding/const/const.dart';
-import 'package:restoran_app_dicoding/controller/db_controller.dart';
 import 'package:restoran_app_dicoding/controller/restaurant_controller.dart';
-import 'package:restoran_app_dicoding/model/detail_restaurant_model.dart';
-import 'package:restoran_app_dicoding/model/favorite_model.dart';
-import 'package:restoran_app_dicoding/model/restaurant_model.dart';
+
+import 'package:restoran_app_dicoding/ui/widgets/button_fav.dart';
 import 'package:restoran_app_dicoding/ui/widgets/item_menu_widget.dart';
 import 'package:restoran_app_dicoding/const/const.dart' as helper;
 import 'package:restoran_app_dicoding/ui/widgets/template_text_form_field.dart';
@@ -17,12 +15,15 @@ class DetailRestaurantPage extends StatelessWidget {
   final String pictureId;
   final String name;
   final String city;
+  final rating;
   final bool isFavorite;
-  const DetailRestaurantPage({Key key, @required this.id, this.pictureId, this.name, this.city, this.isFavorite}) : super(key: key);
+  const DetailRestaurantPage({Key key, @required this.id, this.pictureId, this.name, this.city, this.isFavorite, this.rating}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final scaffoldKey = GlobalKey<ScaffoldState>();
     return Scaffold(
+      key: scaffoldKey,
       body: FutureBuilder(
         future: Provider.of<RestaurantController>(context, listen: false).getDetailRestaurant(id),
         builder: (ctx, snapshot) => snapshot.hasError
@@ -33,7 +34,7 @@ class DetailRestaurantPage extends StatelessWidget {
                     : CustomScrollView(
                         slivers: [
                           _buildAppBar(detailRest),
-                          _buildBody(detailRest, context),
+                          _buildBody(detailRest, context, scaffoldKey),
                         ],
                       ),
               ),
@@ -41,8 +42,7 @@ class DetailRestaurantPage extends StatelessWidget {
     );
   }
 
-  SliverList _buildBody(RestaurantController detailRest, BuildContext context) {
-    var db = Provider.of<DBController>(context, listen: false);
+  SliverList _buildBody(RestaurantController detailRest, BuildContext context, scaffoldKey) {
     return SliverList(
       delegate: SliverChildListDelegate(
         [
@@ -144,25 +144,14 @@ class DetailRestaurantPage extends StatelessWidget {
                   child: Row(
                     children: [
                       TemplateButtonFav(
-                          isFav: isFavorite,
-                          onPress: () {
-                            if (isFavorite == true) {
-                              Provider.of<DBController>(context, listen: false).deleteFavorite(
-                                idFav: detailRest.detailRestaurantModel.restaurant.id,
-                              );
-                            }
-                            if (isFavorite == false) {
-                              Provider.of<DBController>(context, listen: false).addFavorite(
-                                favorite: FavoriteModel(
-                                  idRestaurant: detailRest.detailRestaurantModel.restaurant.id,
-                                  city: detailRest.detailRestaurantModel.restaurant.city,
-                                  name: detailRest.detailRestaurantModel.restaurant.name,
-                                  idPicture: detailRest.detailRestaurantModel.restaurant.pictureId,
-                                  rating: detailRest.detailRestaurantModel.restaurant.rating.toString(),
-                                ),
-                              );
-                            }
-                          }),
+                        scaffoldKey: scaffoldKey,
+                        name: name,
+                        rating: rating.toString(),
+                        city: city,
+                        id: id,
+                        pictureId: pictureId,
+                        isFav: isFavorite,
+                      ),
                     ],
                   ),
                 ),
@@ -171,32 +160,6 @@ class DetailRestaurantPage extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  Widget buttonRemoveFav(BuildContext context, RestaurantController detailRest) {
-    return TemplateButtonFav();
-  }
-
-  IconButton buttonAddFav(BuildContext context, RestaurantController detailRest) {
-    return IconButton(
-      icon: Icon(
-        Icons.favorite_border,
-        size: 40,
-        color: primaryColor,
-      ),
-      onPressed: () {
-//
-        Provider.of<DBController>(context, listen: false).addFavorite(
-          favorite: FavoriteModel(
-            idRestaurant: detailRest.detailRestaurantModel.restaurant.id,
-            city: detailRest.detailRestaurantModel.restaurant.city,
-            name: detailRest.detailRestaurantModel.restaurant.name,
-            idPicture: detailRest.detailRestaurantModel.restaurant.pictureId,
-            rating: detailRest.detailRestaurantModel.restaurant.rating.toString(),
-          ),
-        );
-      },
     );
   }
 
@@ -398,32 +361,5 @@ class DetailRestaurantPage extends StatelessWidget {
             ),
           ],
         ));
-  }
-}
-
-class TemplateButtonFav extends StatefulWidget {
-  final Function onPress;
-  final bool isFav;
-  const TemplateButtonFav({
-    Key key,
-    this.onPress,
-    this.isFav,
-  }) : super(key: key);
-
-  @override
-  _TemplateButtonFavState createState() => _TemplateButtonFavState();
-}
-
-class _TemplateButtonFavState extends State<TemplateButtonFav> {
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(
-        widget.isFav ? Icons.favorite : Icons.favorite_border,
-        size: 40,
-        color: primaryColor,
-      ),
-      onPressed: widget.onPress,
-    );
   }
 }

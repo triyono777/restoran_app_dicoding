@@ -10,9 +10,15 @@ class RestaurantController extends ChangeNotifier {
   RestaurantModel restaurantModel;
   DetailRestaurantModel detailRestaurantModel;
   bool showSearch = false;
+  bool isFavorite = false;
 
   toggleSearch() {
     showSearch = !showSearch;
+    notifyListeners();
+  }
+
+  toggleFav() {
+    isFavorite = !isFavorite;
     notifyListeners();
   }
 
