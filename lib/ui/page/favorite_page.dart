@@ -30,13 +30,19 @@ class FavoritePage extends StatelessWidget {
                       itemCount: dbRest.listFavorites.length,
                       itemBuilder: (ctx, index) => GestureDetector(
                         onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
                               builder: (ctx) => DetailRestaurantPage(
-                                    id: dbRest.listFavorites[index].idRestaurant,
-                                    pictureId: dbRest.listFavorites[index].idPicture,
-                                    name: dbRest.listFavorites[index].name,
-                                    city: dbRest.listFavorites[index].city,
-                                  )));
+                                isFavorite: db.listFavorites.any(
+                                  (element) => element.idRestaurant == dbRest.listFavorites[index].idRestaurant,
+                                ),
+                                id: dbRest.listFavorites[index].idRestaurant,
+                                pictureId: dbRest.listFavorites[index].idPicture,
+                                name: dbRest.listFavorites[index].name,
+                                city: dbRest.listFavorites[index].city,
+                              ),
+                            ),
+                          );
                         },
                         child: ItemListRestaurant(
                           city: dbRest.listFavorites[index].city,

@@ -17,7 +17,8 @@ class DetailRestaurantPage extends StatelessWidget {
   final String pictureId;
   final String name;
   final String city;
-  const DetailRestaurantPage({Key key, @required this.id, this.pictureId, this.name, this.city}) : super(key: key);
+  final bool isFavorite;
+  const DetailRestaurantPage({Key key, @required this.id, this.pictureId, this.name, this.city, this.isFavorite}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +42,7 @@ class DetailRestaurantPage extends StatelessWidget {
   }
 
   SliverList _buildBody(RestaurantController detailRest, BuildContext context) {
+    var db = Provider.of<DBController>(context, listen: false);
     return SliverList(
       delegate: SliverChildListDelegate(
         [
@@ -141,36 +143,26 @@ class DetailRestaurantPage extends StatelessWidget {
                   right: 10,
                   child: Row(
                     children: [
-                      IconButton(
-                        icon: Icon(
-                          Icons.clear,
-                          size: 40,
-                        ),
-                        onPressed: () {
-//                      print(detailRest.detailRestaurantModel.restaurant.id.toString());
-                          Provider.of<DBController>(context, listen: false).deleteFavorite(
-                            idFav: detailRest.detailRestaurantModel.restaurant.id,
-                          );
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.favorite_border,
-                          size: 40,
-                        ),
-                        onPressed: () {
-//
-                          Provider.of<DBController>(context, listen: false).addFavorite(
-                            favorite: FavoriteModel(
-                              idRestaurant: detailRest.detailRestaurantModel.restaurant.id,
-                              city: detailRest.detailRestaurantModel.restaurant.city,
-                              name: detailRest.detailRestaurantModel.restaurant.name,
-                              idPicture: detailRest.detailRestaurantModel.restaurant.pictureId,
-                              rating: detailRest.detailRestaurantModel.restaurant.rating.toString(),
-                            ),
-                          );
-                        },
-                      ),
+                      TemplateButtonFav(
+                          isFav: isFavorite,
+                          onPress: () {
+                            if (isFavorite == true) {
+                              Provider.of<DBController>(context, listen: false).deleteFavorite(
+                                idFav: detailRest.detailRestaurantModel.restaurant.id,
+                              );
+                            }
+                            if (isFavorite == false) {
+                              Provider.of<DBController>(context, listen: false).addFavorite(
+                                favorite: FavoriteModel(
+                                  idRestaurant: detailRest.detailRestaurantModel.restaurant.id,
+                                  city: detailRest.detailRestaurantModel.restaurant.city,
+                                  name: detailRest.detailRestaurantModel.restaurant.name,
+                                  idPicture: detailRest.detailRestaurantModel.restaurant.pictureId,
+                                  rating: detailRest.detailRestaurantModel.restaurant.rating.toString(),
+                                ),
+                              );
+                            }
+                          }),
                     ],
                   ),
                 ),
@@ -179,6 +171,32 @@ class DetailRestaurantPage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget buttonRemoveFav(BuildContext context, RestaurantController detailRest) {
+    return TemplateButtonFav();
+  }
+
+  IconButton buttonAddFav(BuildContext context, RestaurantController detailRest) {
+    return IconButton(
+      icon: Icon(
+        Icons.favorite_border,
+        size: 40,
+        color: primaryColor,
+      ),
+      onPressed: () {
+//
+        Provider.of<DBController>(context, listen: false).addFavorite(
+          favorite: FavoriteModel(
+            idRestaurant: detailRest.detailRestaurantModel.restaurant.id,
+            city: detailRest.detailRestaurantModel.restaurant.city,
+            name: detailRest.detailRestaurantModel.restaurant.name,
+            idPicture: detailRest.detailRestaurantModel.restaurant.pictureId,
+            rating: detailRest.detailRestaurantModel.restaurant.rating.toString(),
+          ),
+        );
+      },
     );
   }
 
@@ -380,5 +398,32 @@ class DetailRestaurantPage extends StatelessWidget {
             ),
           ],
         ));
+  }
+}
+
+class TemplateButtonFav extends StatefulWidget {
+  final Function onPress;
+  final bool isFav;
+  const TemplateButtonFav({
+    Key key,
+    this.onPress,
+    this.isFav,
+  }) : super(key: key);
+
+  @override
+  _TemplateButtonFavState createState() => _TemplateButtonFavState();
+}
+
+class _TemplateButtonFavState extends State<TemplateButtonFav> {
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(
+        widget.isFav ? Icons.favorite : Icons.favorite_border,
+        size: 40,
+        color: primaryColor,
+      ),
+      onPressed: widget.onPress,
+    );
   }
 }

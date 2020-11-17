@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
+import 'package:restoran_app_dicoding/controller/db_controller.dart';
 import 'package:restoran_app_dicoding/controller/restaurant_controller.dart';
 import 'package:restoran_app_dicoding/model/restaurant_model.dart';
 import 'package:restoran_app_dicoding/ui/page/detail_restaurat.dart';
@@ -70,6 +71,7 @@ class HomePage extends StatelessWidget {
   }
 
   AnimationConfiguration itemList(int index, BuildContext context, RestaurantController restaurant) {
+    var db = Provider.of<DBController>(context, listen: false);
     return AnimationConfiguration.staggeredList(
       position: index,
       duration: const Duration(milliseconds: 375),
@@ -80,6 +82,9 @@ class HomePage extends StatelessWidget {
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (ctx) => DetailRestaurantPage(
+                        isFavorite: db.listFavorites.any(
+                          (element) => element.idRestaurant == restaurant.restaurantModel.restaurants[index].id,
+                        ),
                         id: restaurant.restaurantModel.restaurants[index].id,
                         pictureId: restaurant.restaurantModel.restaurants[index].pictureId,
                         name: restaurant.restaurantModel.restaurants[index].name,
