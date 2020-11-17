@@ -152,6 +152,7 @@ class DetailRestaurantPage extends StatelessWidget {
                           city: detailRest.detailRestaurantModel.restaurant.city,
                           name: detailRest.detailRestaurantModel.restaurant.name,
                           idPicture: detailRest.detailRestaurantModel.restaurant.pictureId,
+                          rating: detailRest.detailRestaurantModel.restaurant.rating.toString(),
                         ),
                       );
                     },

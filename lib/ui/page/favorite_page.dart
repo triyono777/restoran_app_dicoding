@@ -18,12 +18,33 @@ class FavoritePage extends StatelessWidget {
       body: FutureBuilder<List<FavoriteModel>>(
         future: db.getAllFavorite(),
         builder: (ctx, snapshot) => !snapshot.hasData
-            ? Text('loading')
-            : ListView.builder(
-                itemCount: db.listFavorites.length,
-                itemBuilder: (ctx, index) => ListTile(
-                      title: Text(db.listFavorites[index].name),
-                    )),
+            ? Center(
+                child: Lottie.asset(
+                  'assets/animation/loading-animation.json',
+                ),
+              )
+            : (db.listFavorites.isEmpty
+                ? Center(child: Text('Belum ada favorite '))
+                : ListView.builder(
+                    itemCount: db.listFavorites.length,
+                    itemBuilder: (ctx, index) => GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (ctx) => DetailRestaurantPage(
+                                  id: db.listFavorites[index].idRestaurant,
+                                  pictureId: db.listFavorites[index].idPicture,
+                                  name: db.listFavorites[index].name,
+                                  city: db.listFavorites[index].city,
+                                )));
+                      },
+                      child: ItemListRestaurant(
+                        city: db.listFavorites[index].city,
+                        rating: db.listFavorites[index].rating,
+                        name: db.listFavorites[index].name,
+                        idPicture: db.listFavorites[index].idPicture,
+                      ),
+                    ),
+                  )),
       ),
     );
   }

@@ -4,23 +4,27 @@ import 'package:restoran_app_dicoding/model/restaurant_model.dart';
 import 'package:restoran_app_dicoding/const/const.dart' as helper;
 
 class ItemListRestaurant extends StatelessWidget {
-  final Restaurants restaurants;
-  final String idHero;
+  final String idPicture;
+  final String name;
+  final String city;
+  final rating;
   const ItemListRestaurant({
     Key key,
-    this.restaurants,
-    this.idHero,
+    this.idPicture,
+    this.name,
+    this.city,
+    this.rating,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       leading: Hero(
-        tag: idHero,
+        tag: idPicture,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
           child: Image.network(
-            helper.imageMedium + restaurants.pictureId.toString(),
+            helper.imageMedium + idPicture.toString(),
             fit: BoxFit.cover,
             width: 100,
             height: 150,
@@ -28,14 +32,14 @@ class ItemListRestaurant extends StatelessWidget {
         ),
       ),
       title: Text(
-        restaurants.name,
+        name,
         style: myTextTheme.subtitle1,
       ),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          buildItem(iconData: Icons.pin_drop, content: restaurants.city),
-          buildItem(iconData: Icons.star, content: restaurants.rating, color: accentColor),
+          buildItem(iconData: Icons.pin_drop, content: city),
+          buildItem(iconData: Icons.star, content: rating, color: accentColor),
         ],
       ),
       isThreeLine: true,

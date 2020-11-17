@@ -87,8 +87,10 @@ class HomePage extends StatelessWidget {
                       )));
             },
             child: ItemListRestaurant(
-              restaurants: restaurant.restaurantModel.restaurants[index],
-              idHero: restaurant.restaurantModel.restaurants[index].pictureId,
+              idPicture: restaurant.restaurantModel.restaurants[index].pictureId,
+              name: restaurant.restaurantModel.restaurants[index].name,
+              rating: restaurant.restaurantModel.restaurants[index].rating,
+              city: restaurant.restaurantModel.restaurants[index].city,
             ),
           ),
         ),

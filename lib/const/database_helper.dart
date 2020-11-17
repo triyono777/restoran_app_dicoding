@@ -36,6 +36,7 @@ class DatabaseHelper {
                id TEXT PRIMARY KEY,
                name TEXT,
                pictureId TEXT,
+               rating TEXT,
                city TEXT
              )''',
         );
