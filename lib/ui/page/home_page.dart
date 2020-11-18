@@ -8,7 +8,6 @@ import 'package:restoran_app_dicoding/controller/db_controller.dart';
 import 'package:restoran_app_dicoding/controller/restaurant_controller.dart';
 import 'package:restoran_app_dicoding/model/restaurant_model.dart';
 import 'package:restoran_app_dicoding/ui/page/detail_restaurat.dart';
-import 'package:restoran_app_dicoding/ui/page/favorite_page.dart';
 import 'package:restoran_app_dicoding/ui/page/settings_page.dart';
 import 'package:restoran_app_dicoding/ui/widgets/item_list_restaurant.dart';
 import 'package:lottie/lottie.dart';

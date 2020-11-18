@@ -12,25 +12,10 @@ class SettingsPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Settings Page'),
       ),
-      body: _buildList(context),
-    );
-  }
-
-  Widget _buildList(BuildContext context) {
-    return ListView(
-      children: [
-        Material(
-          child: ListTile(
-            title: Text('Dark Theme'),
-            trailing: Switch.adaptive(
-              value: false,
-              onChanged: (value) => customDialog(context),
-            ),
-          ),
-        ),
-        Material(
-          child: ListTile(
-            title: Text('Scheduling News'),
+      body: Column(
+        children: [
+          ListTile(
+            title: Text('Scheduling Promo Restaurant'),
             trailing: Consumer<SchedulingProvider>(
               builder: (context, scheduled, _) {
                 return Switch.adaptive(
@@ -39,15 +24,15 @@ class SettingsPage extends StatelessWidget {
                     if (Platform.isIOS) {
                       customDialog(context);
                     } else {
-                      scheduled.scheduledNews(value);
+                      scheduled.scheduledRestaurant(value);
                     }
                   },
                 );
               },
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
