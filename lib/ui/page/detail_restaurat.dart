@@ -30,7 +30,11 @@ class DetailRestaurantPage extends StatelessWidget {
             ? Center(child: Text('terjadi kesalahan load data ${snapshot.error}'))
             : Consumer<RestaurantController>(
                 builder: (ctx, detailRest, _) => detailRest?.restaurantModel == null
-                    ? Text('load')
+                    ? Center(
+                        child: Lottie.asset(
+                          'assets/animation/loading-animation.json',
+                        ),
+                      )
                     : CustomScrollView(
                         slivers: [
                           _buildAppBar(detailRest),

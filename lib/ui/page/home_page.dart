@@ -1,17 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:restoran_app_dicoding/const/notification_helper.dart';
+import 'package:restoran_app_dicoding/controller/background_service.dart';
 import 'package:restoran_app_dicoding/controller/db_controller.dart';
 import 'package:restoran_app_dicoding/controller/restaurant_controller.dart';
 import 'package:restoran_app_dicoding/model/restaurant_model.dart';
 import 'package:restoran_app_dicoding/ui/page/detail_restaurat.dart';
 import 'package:restoran_app_dicoding/ui/page/favorite_page.dart';
+import 'package:restoran_app_dicoding/ui/page/settings_page.dart';
 import 'package:restoran_app_dicoding/ui/widgets/item_list_restaurant.dart';
 import 'package:lottie/lottie.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   static const routeName = '/Homepage';
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final TextEditingController _search = TextEditingController();
+  final NotificationHelper _notificationHelper = NotificationHelper();
+  final BackgroundService _service = BackgroundService();
+
+  @override
+  void initState() {
+    super.initState();
+    port.listen((_) async => await _service.someTask());
+    _notificationHelper.configureSelectNotificationSubject();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    selectNotificationSubject.close();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -171,11 +196,12 @@ class HomePage extends StatelessWidget {
                           IconButton(
                               icon: Icon(Icons.favorite),
                               onPressed: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => FavoritePage(),
-                                  ),
-                                );
+//                                Navigator.of(context).push(
+//                                  MaterialPageRoute(
+//                                    builder: (context) => FavoritePage(),
+//                                  ),
+//                                );
+                                Get.to(SettingsPage());
                               }),
                         ],
                       ),
