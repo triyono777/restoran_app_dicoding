@@ -83,9 +83,11 @@ class _TemplateButtonFavState extends State<TemplateButtonFav> {
   }
 
   ScaffoldFeatureController<SnackBar, SnackBarClosedReason> buildSnackBar(String label) {
-    return widget.scaffoldKey.currentState.showSnackBar(SnackBar(
-      content: Text('$label favorite sukses'),
-      backgroundColor: primaryColor.withOpacity(0.9),
-    ));
+    return widget.scaffoldKey.currentState.showSnackBar(
+      SnackBar(
+        content: Text('$label favorite sukses'),
+        backgroundColor: primaryColor.withOpacity(0.9),
+      ),
+    );
   }
 }

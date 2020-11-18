@@ -26,9 +26,7 @@ class SplashScreen extends StatelessWidget {
           return OnBoardingPage();
         }
       },
-
       splash: 'assets/logo/logo.png',
-//      nextScreen: OnBoardingPage(),
       splashTransition: SplashTransition.fadeTransition,
       pageTransitionType: PageTransitionType.fade,
     );

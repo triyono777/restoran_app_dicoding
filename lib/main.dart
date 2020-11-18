@@ -74,31 +74,29 @@ class MyApp extends StatelessWidget {
       ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        home: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Restaurant App',
-          theme: ThemeData(
-            buttonTheme: ButtonThemeData(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
-            primaryColor: primaryColor,
-            accentColor: secondaryColor,
-            scaffoldBackgroundColor: Colors.white,
-            primarySwatch: Colors.blue,
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-            textTheme: myTextTheme,
-            appBarTheme: AppBarTheme(
-              textTheme: myTextTheme.apply(bodyColor: Colors.black),
-              elevation: 0,
-            ),
+        title: 'Restaurant App',
+        theme: ThemeData(
+          buttonTheme: ButtonThemeData(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
+          primaryColor: primaryColor,
+          accentColor: secondaryColor,
+          scaffoldBackgroundColor: Colors.white,
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          textTheme: myTextTheme,
+          iconTheme: IconThemeData(color: primaryColor),
+          appBarTheme: AppBarTheme(
+            textTheme: myTextTheme.apply(bodyColor: Colors.black),
+            elevation: 0,
           ),
-          initialRoute: SplashScreen.routeName,
-          routes: {
-            SplashScreen.routeName: (ctx) => SplashScreen(),
-            HomePage.routeName: (ctx) => HomePage(),
-            DetailRestaurantPage.routeName: (ctx) => DetailRestaurantPage(
-                  id: ModalRoute.of(ctx).settings.arguments,
-                ),
-          },
         ),
+        initialRoute: SplashScreen.routeName,
+        routes: {
+          SplashScreen.routeName: (ctx) => SplashScreen(),
+          HomePage.routeName: (ctx) => HomePage(),
+          DetailRestaurantPage.routeName: (ctx) => DetailRestaurantPage(
+                id: ModalRoute.of(ctx).settings.arguments,
+              ),
+        },
       ),
     );
   }

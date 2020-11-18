@@ -8,6 +8,7 @@ import 'package:restoran_app_dicoding/controller/db_controller.dart';
 import 'package:restoran_app_dicoding/controller/restaurant_controller.dart';
 import 'package:restoran_app_dicoding/model/restaurant_model.dart';
 import 'package:restoran_app_dicoding/ui/page/detail_restaurat.dart';
+import 'package:restoran_app_dicoding/ui/page/favorite_page.dart';
 import 'package:restoran_app_dicoding/ui/page/settings_page.dart';
 import 'package:restoran_app_dicoding/ui/widgets/item_list_restaurant.dart';
 import 'package:lottie/lottie.dart';
@@ -23,6 +24,7 @@ class _HomePageState extends State<HomePage> {
   final TextEditingController _search = TextEditingController();
   final NotificationHelper _notificationHelper = NotificationHelper();
   final BackgroundService _service = BackgroundService();
+  final scaffoldGlobalKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -41,6 +43,37 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     var restaurant = Provider.of<RestaurantController>(context, listen: false);
     return Scaffold(
+      key: scaffoldGlobalKey,
+      endDrawer: Container(
+        width: MediaQuery.of(context).size.width / 3,
+        child: Drawer(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Column(
+                children: [
+                  IconButton(
+                      icon: Icon(Icons.favorite),
+                      onPressed: () {
+                        Get.to(FavoritePage());
+                      }),
+                  Text('Favorite')
+                ],
+              ),
+              Column(
+                children: [
+                  IconButton(
+                      icon: Icon(Icons.settings),
+                      onPressed: () {
+                        Get.to(SettingsPage());
+                      }),
+                  Text('Settings'),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,17 +137,20 @@ class _HomePageState extends State<HomePage> {
         child: FadeInAnimation(
           child: GestureDetector(
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
+              Navigator.of(context).push(
+                MaterialPageRoute(
                   builder: (ctx) => DetailRestaurantPage(
-                        isFavorite: db.listFavorites.any(
-                          (element) => element.idRestaurant == restaurant.restaurantModel.restaurants[index].id,
-                        ),
-                        id: restaurant.restaurantModel.restaurants[index].id,
-                        pictureId: restaurant.restaurantModel.restaurants[index].pictureId,
-                        name: restaurant.restaurantModel.restaurants[index].name,
-                        city: restaurant.restaurantModel.restaurants[index].city,
-                        rating: restaurant.restaurantModel.restaurants[index].rating,
-                      )));
+                    isFavorite: db.listFavorites.any(
+                      (element) => element.idRestaurant == restaurant.restaurantModel.restaurants[index].id,
+                    ),
+                    id: restaurant.restaurantModel.restaurants[index].id,
+                    pictureId: restaurant.restaurantModel.restaurants[index].pictureId,
+                    name: restaurant.restaurantModel.restaurants[index].name,
+                    city: restaurant.restaurantModel.restaurants[index].city,
+                    rating: restaurant.restaurantModel.restaurants[index].rating,
+                  ),
+                ),
+              );
             },
             child: ItemListRestaurant(
               idPicture: restaurant.restaurantModel.restaurants[index].pictureId,
@@ -143,18 +179,19 @@ class _HomePageState extends State<HomePage> {
                   restaurant.searchRestaurant(val);
                 },
                 decoration: InputDecoration(
-                    hintText: 'cari nama, menu',
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        _search.clear();
-                        restaurant.toggleSearch();
-                        restaurant.getRestaurantAll();
-                      },
-                      icon: Icon(Icons.clear),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    )),
+                  hintText: 'cari nama, menu',
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      _search.clear();
+                      restaurant.toggleSearch();
+                      restaurant.getRestaurantAll();
+                    },
+                    icon: Icon(Icons.clear),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
               ),
             )
           : Padding(
@@ -193,14 +230,9 @@ class _HomePageState extends State<HomePage> {
                                 restaurant.toggleSearch();
                               }),
                           IconButton(
-                              icon: Icon(Icons.favorite),
+                              icon: Icon(Icons.menu),
                               onPressed: () {
-//                                Navigator.of(context).push(
-//                                  MaterialPageRoute(
-//                                    builder: (context) => FavoritePage(),
-//                                  ),
-//                                );
-                                Get.to(SettingsPage());
+                                scaffoldGlobalKey.currentState.openEndDrawer();
                               }),
                         ],
                       ),
