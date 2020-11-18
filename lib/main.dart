@@ -1,14 +1,33 @@
+import 'dart:io';
+
+import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:restoran_app_dicoding/const/const.dart';
+import 'package:restoran_app_dicoding/const/notification_helper.dart';
+import 'package:restoran_app_dicoding/controller/background_service.dart';
 import 'package:restoran_app_dicoding/controller/db_controller.dart';
 import 'package:restoran_app_dicoding/controller/restaurant_controller.dart';
+import 'package:restoran_app_dicoding/controller/scheduling_provider.dart';
 import 'package:restoran_app_dicoding/ui/page/detail_restaurat.dart';
 import 'package:restoran_app_dicoding/ui/page/home_page.dart';
+import 'package:restoran_app_dicoding/ui/page/settings_page.dart';
 import 'package:restoran_app_dicoding/ui/page/splash_screen.dart';
 
-void main() {
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final NotificationHelper _notificationHelper = NotificationHelper();
+  final BackgroundService _service = BackgroundService();
+  _service.initializeIsolate();
+  if (Platform.isAndroid) {
+    await AndroidAlarmManager.initialize();
+  }
+  await _notificationHelper.initNotifications(flutterLocalNotificationsPlugin);
+
   runApp(MyApp());
 }
 
@@ -48,8 +67,12 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => RestaurantController()),
         ChangeNotifierProvider(create: (_) => DBController()),
+        ChangeNotifierProvider<SchedulingProvider>(
+          create: (_) => SchedulingProvider(),
+          child: SettingsPage(),
+        ),
       ],
-      child: MaterialApp(
+      child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Restaurant App',
         theme: ThemeData(
@@ -60,6 +83,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
           textTheme: myTextTheme,
+          iconTheme: IconThemeData(color: primaryColor),
           appBarTheme: AppBarTheme(
             textTheme: myTextTheme.apply(bodyColor: Colors.black),
             elevation: 0,

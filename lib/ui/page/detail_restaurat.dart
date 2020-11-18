@@ -30,7 +30,11 @@ class DetailRestaurantPage extends StatelessWidget {
             ? Center(child: Text('terjadi kesalahan load data ${snapshot.error}'))
             : Consumer<RestaurantController>(
                 builder: (ctx, detailRest, _) => detailRest?.restaurantModel == null
-                    ? Text('load')
+                    ? Center(
+                        child: Lottie.asset(
+                          'assets/animation/loading-animation.json',
+                        ),
+                      )
                     : CustomScrollView(
                         slivers: [
                           _buildAppBar(detailRest),
@@ -304,62 +308,63 @@ class DetailRestaurantPage extends StatelessWidget {
     TextEditingController _review = TextEditingController();
     GlobalKey<FormState> _formKey = GlobalKey();
     showDialog(
-        barrierDismissible: false,
-        context: context,
-        child: AlertDialog(
-          title: Text("Add Review"),
-          content: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TemplateTextFormField(
-                  controller: _name,
-                  label: 'Nama',
-                ),
-                TemplateTextFormField(
-                  controller: _review,
-                  label: 'Review',
-                ),
-              ],
+      barrierDismissible: false,
+      context: context,
+      child: AlertDialog(
+        title: Text("Add Review"),
+        content: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TemplateTextFormField(
+                controller: _name,
+                label: 'Nama',
+              ),
+              TemplateTextFormField(
+                controller: _review,
+                label: 'Review',
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          RaisedButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            color: Colors.grey,
+            child: Text(
+              'Cancel',
+              style: helper.myTextTheme.button.copyWith(color: Colors.white),
             ),
           ),
-          actions: [
-            RaisedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              color: Colors.grey,
-              child: Text(
-                'Cancel',
-                style: helper.myTextTheme.button.copyWith(color: Colors.white),
-              ),
+          RaisedButton(
+            onPressed: () {
+              if (_formKey.currentState.validate()) {
+                Provider.of<RestaurantController>(context, listen: false)
+                    .addReview(
+                  id: id,
+                  name: _name.text,
+                  review: _review.text,
+                )
+                    .then((value) {
+                  if (!value) {
+                    Navigator.pop(context, true);
+                  } else {
+                    Navigator.pop(context, false);
+                  }
+                });
+              }
+            },
+            child: Text(
+              'ok',
+              style: helper.myTextTheme.button,
             ),
-            RaisedButton(
-              onPressed: () {
-                if (_formKey.currentState.validate()) {
-                  Provider.of<RestaurantController>(context, listen: false)
-                      .addReview(
-                    id: id,
-                    name: _name.text,
-                    review: _review.text,
-                  )
-                      .then((value) {
-                    if (!value) {
-                      Navigator.pop(context, true);
-                    } else {
-                      Navigator.pop(context, false);
-                    }
-                  });
-                }
-              },
-              child: Text(
-                'ok',
-                style: helper.myTextTheme.button,
-              ),
-              color: helper.primaryColor,
-            ),
-          ],
-        ));
+            color: helper.primaryColor,
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -60,7 +60,7 @@ class DatabaseHelper {
     final Database db = await database;
     List<Map<String, dynamic>> results = await db.query(_tableName);
     List<FavoriteModel> listFav = results.map((res) => FavoriteModel.fromMap(res)).toList();
-    print('total fav: ' + listFav.length.toString());
+
     return listFav;
   }
 
