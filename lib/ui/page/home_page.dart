@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:restoran_app_dicoding/const/const.dart';
 import 'package:restoran_app_dicoding/const/notification_helper.dart';
 import 'package:restoran_app_dicoding/controller/background_service.dart';
 import 'package:restoran_app_dicoding/controller/db_controller.dart';
@@ -101,7 +102,20 @@ class _HomePageState extends State<HomePage> {
                   ),
                 )
               : snapshot.hasError
-                  ? Text('terjadi kesalahan load data ${snapshot.error}')
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Lottie.asset(
+                            'assets/animation/error.json',
+                          ),
+                          Text(
+                            'Cek koneksi anda',
+                            style: myTextTheme.headline5,
+                          )
+                        ],
+                      ),
+                    )
                   : Consumer<RestaurantController>(
                       builder: (ctx, restaurant, ch) => AnimationLimiter(
                         child: restaurant.restaurantModel.restaurants.isEmpty
